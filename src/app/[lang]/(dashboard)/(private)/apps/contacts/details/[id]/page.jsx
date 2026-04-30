@@ -1,5 +1,10 @@
+'use client'
+
 // Next Imports
-import { redirect, useParams } from 'next/navigation'
+import { useParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { getLocalizedUrl } from '@/utils/i18n'
 
 // Component Imports
 import CustomerDetails from '@/views/apps/contacts/details'
@@ -25,16 +30,49 @@ import { getEcommerceData } from '@/app/server/actions'
 } */
 const CustomerDetailsPage = ({ params }) => {
   const routeParams = useParams()
-  params = params || routeParams || {}
-  // Vars
-  const data = getEcommerceData()
-  const filteredData = data?.customerData.filter(item => item.customerId === params.id)[0]
+  const navigate = useNavigate()
+  const [filteredData, setFilteredData] = useState(undefined)
 
-  if (!filteredData) {
-    redirect('/not-found')
+  params = params || routeParams || {}
+
+  useEffect(() => {
+    let mounted = true
+
+    const loadData = async () => {
+      try {
+        const data = await getEcommerceData()
+        const customer = data?.customerData?.find(item => item.customerId === params.id)
+
+        if (!mounted) return
+
+        if (!customer) {
+          navigate(getLocalizedUrl('/not-found', params.lang), { replace: true })
+          return
+        }
+
+        setFilteredData(customer)
+      } catch (error) {
+        console.error('Failed to load contact details:', error)
+        if (mounted) {
+          navigate(getLocalizedUrl('/not-found', params.lang), { replace: true })
+        }
+      }
+    }
+
+    if (params?.id) {
+      loadData()
+    }
+
+    return () => {
+      mounted = false
+    }
+  }, [navigate, params?.id])
+
+  if (!params?.id || !filteredData) {
+    return null
   }
 
-  return filteredData ? <CustomerDetails customerData={filteredData} customerId={params.id} /> : null
+  return <CustomerDetails customerData={filteredData} customerId={params.id} />
 }
 
 export default CustomerDetailsPage

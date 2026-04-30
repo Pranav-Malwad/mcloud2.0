@@ -1,5 +1,6 @@
 // Next Imports
 import dynamic from 'next/dynamic'
+import { useEffect, useState } from 'react'
 
 // MUI Imports
 import Grid from '@mui/material/Grid'
@@ -61,13 +62,38 @@ const tabContentList = () => ({
   Notification: <NotificationTab />
 })
 
-const CustomerDetails = async ({ customerData, customerId }) => {
-  const tableData = await getEcommerceData()
+const CustomerDetails = ({ customerData, customerId }) => {
+  const [tableData, setTableData] = useState(null)
+
+  useEffect(() => {
+    let mounted = true
+
+    const loadTableData = async () => {
+      try {
+        const data = await getEcommerceData()
+
+        if (mounted) {
+          setTableData(data || null)
+        }
+      } catch (error) {
+        console.error('Failed to load contact details table data:', error)
+        if (mounted) {
+          setTableData(null)
+        }
+      }
+    }
+
+    loadTableData()
+
+    return () => {
+      mounted = false
+    }
+  }, [])
 
   const breadcrumbs = [
     { label: 'Home', path: '/' },
     { label: 'Contacts', path: '/apps/contacts' },
-    { label: `Contact #${customerId || 'ID'}`, path: `/contacts/${customerId || 'ID'}` }
+    { label: `Contact #${customerId || 'ID'}`, path: `/apps/contacts/details/${customerId || 'ID'}` }
   ]
 
   return (

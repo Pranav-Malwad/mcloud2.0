@@ -72,7 +72,7 @@ const UserListTable = ({ tableData }) => {
   // States
   const [rowSelection, setRowSelection] = useState({})
 
-  const [data, setData] = useState(...[tableData])
+  const [data, setData] = useState(Array.isArray(tableData) ? tableData : [])
   const [globalFilter, setGlobalFilter] = useState('')
 
   const columns = useMemo(

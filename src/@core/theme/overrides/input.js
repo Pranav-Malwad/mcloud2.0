@@ -1,12 +1,37 @@
 const input = {
-  MuiFormControl: {
+  MuiTextField: {
+    defaultProps: {
+      margin: 'normal',
+      size: 'small',
+      variant: 'outlined'
+    },
     styleOverrides: {
-      root: {
+      root: ({ theme }) => ({
+        '&.MuiFormControl-marginNormal': {
+          marginTop: 0,
+          marginBottom: theme.spacing(2.5),
+          marginInline: theme.spacing(1)
+        }
+      })
+    }
+  },
+  MuiFormControl: {
+    defaultProps: {
+      margin: 'normal',
+      size: 'small'
+    },
+    styleOverrides: {
+      root: ({ theme }) => ({
+        '&.MuiFormControl-marginNormal': {
+          marginTop: 0,
+          marginBottom: theme.spacing(2.5),
+          marginInline: theme.spacing(1)
+        },
         '&:has(.MuiRadio-root) .MuiFormHelperText-root, &:has(.MuiCheckbox-root) .MuiFormHelperText-root, &:has(.MuiSwitch-root) .MuiFormHelperText-root':
           {
             marginInline: 0
           }
-      }
+      })
     }
   },
   MuiInputBase: {

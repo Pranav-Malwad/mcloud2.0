@@ -54,15 +54,26 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Breadcrumbs, Link, Typography, Box } from '@mui/material'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
+import { getLocalizedUrl } from '@/utils/i18n'
+import themeConfig from '@/configs/themeConfig'
 
 const CustomBreadcrumb = ({ breadcrumbs }) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const router = useRouter()
+  const { lang: locale } = useParams()
 
   const handleBreadcrumbClick = (index, path) => {
     setActiveIndex(index)
-    router.push(path)
+    if (!path) return
+
+    const resolvedPath = path === '/' ? themeConfig.homePageUrl : path
+    const localizedPath =
+      resolvedPath.startsWith('http://') || resolvedPath.startsWith('https://')
+        ? resolvedPath
+        : getLocalizedUrl(resolvedPath, locale)
+
+    router.push(localizedPath)
   }
 
   return (

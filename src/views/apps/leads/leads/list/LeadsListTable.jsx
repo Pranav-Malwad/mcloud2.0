@@ -95,7 +95,7 @@ const OrderListTable = ({ leadData }) => {
   const [rowSelection, setRowSelection] = useState({})
   const [addUserOpen, setAddUserOpen] = useState(false)
 
-  const [data, setData] = useState(...[leadData])
+  const [data, setData] = useState(Array.isArray(leadData) ? leadData : [])
   const [globalFilter, setGlobalFilter] = useState('')
 
   // Hooks

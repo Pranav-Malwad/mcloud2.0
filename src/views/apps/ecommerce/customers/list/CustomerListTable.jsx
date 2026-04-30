@@ -96,7 +96,7 @@ const CustomerListTable = ({ customerData }) => {
   // States
   const [customerUserOpen, setCustomerUserOpen] = useState(false)
   const [rowSelection, setRowSelection] = useState({})
-  const [data, setData] = useState(...[customerData])
+  const [data, setData] = useState(Array.isArray(customerData) ? customerData : [])
   const [globalFilter, setGlobalFilter] = useState('')
 
   // Hooks

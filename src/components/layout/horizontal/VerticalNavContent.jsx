@@ -21,6 +21,7 @@ import useHorizontalNav from '@menu/hooks/useHorizontalNav'
 // Util Imports
 import { mapHorizontalToVerticalMenu } from '@menu/utils/menuUtils'
 import { getLocalizedUrl } from '@/utils/i18n'
+import themeConfig from '@configs/themeConfig'
 
 const StyledBoxForShadow = styled('div')(({ theme }) => ({
   top: 60,
@@ -67,7 +68,7 @@ const VerticalNavContent = ({ children }) => {
   return (
     <>
       <NavHeader>
-        <Logo href={getLocalizedUrl('/', locale)} />
+        <Logo href={getLocalizedUrl(themeConfig.homePageUrl, locale)} />
         <NavCollapseIcons />
       </NavHeader>
       <StyledBoxForShadow ref={shadowRef} />

@@ -68,7 +68,7 @@ const QuoteDetails = ({ orderData, order }) => {
   const breadcrumbs = [
     { label: 'Home', path: '/' },
     { label: 'Quotes', path: '/apps/quotes' },
-    { label: `Quote #${order || 'ID'}`, path: `/quotes/${order || 'ID'}` }
+    { label: `Quote #${order || 'ID'}`, path: `/apps/quotes/details/${order || 'ID'}` }
   ]
 
   return (

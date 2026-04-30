@@ -85,7 +85,7 @@ const ManageReviewsTable = ({ reviewsData }) => {
   // States
   const [status, setStatus] = useState('All')
   const [rowSelection, setRowSelection] = useState({})
-  const [allData, setAllData] = useState(...[reviewsData])
+  const [allData, setAllData] = useState(Array.isArray(reviewsData) ? reviewsData : [])
   const [data, setData] = useState(allData)
   const [globalFilter, setGlobalFilter] = useState('')
 

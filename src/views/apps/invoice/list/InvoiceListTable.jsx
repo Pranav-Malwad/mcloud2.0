@@ -99,7 +99,7 @@ const InvoiceListTable = ({ invoiceData }) => {
   // States
   const [status, setStatus] = useState('')
   const [rowSelection, setRowSelection] = useState({})
-  const [data, setData] = useState(...[invoiceData])
+  const [data, setData] = useState(Array.isArray(invoiceData) ? invoiceData : [])
   const [filteredData, setFilteredData] = useState(data)
   const [globalFilter, setGlobalFilter] = useState('')
 
@@ -305,7 +305,7 @@ const InvoiceListTable = ({ invoiceData }) => {
           variant='contained'
           component={Link}
           startIcon={<i className='ri-add-line' />}
-          href={getLocalizedUrl('apps/invoice/add', locale)}
+          href={getLocalizedUrl('/apps/invoice/add', locale)}
           className='max-sm:is-full'
         >
           Create Invoice

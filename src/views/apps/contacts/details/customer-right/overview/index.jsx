@@ -1,8 +1,6 @@
 // MUI Imports
 import Grid from '@mui/material/Grid'
-
-// Component Imports
-import OrderListTable from './OrderListTable'
+import { useEffect } from 'react'
 
 // Data Imports
 import { getStatisticsData, getEcommerceData } from '@/app/server/actions'
@@ -40,10 +38,19 @@ import CustomerAdditonalInformation from './CustomerAdditonalInformation'
 
   return res.json()
 } */
-const Overview = async () => {
-  // Vars
-  const data = await getStatisticsData()
-  const tableData = await getEcommerceData()
+const Overview = () => {
+  useEffect(() => {
+    const loadOverviewData = async () => {
+      try {
+        await getStatisticsData()
+        await getEcommerceData()
+      } catch (error) {
+        console.error('Failed to load contact overview data:', error)
+      }
+    }
+
+    loadOverviewData()
+  }, [])
 
   return (
     <Grid container spacing={6}>

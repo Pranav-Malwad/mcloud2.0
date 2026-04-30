@@ -98,7 +98,7 @@ const ApolloLeadsListTable = ({ apolloLeadData }) => {
   const [rowSelection, setRowSelection] = useState({})
   const [addUserOpen, setAddUserOpen] = useState(false)
 
-  const [data, setData] = useState(...[apolloLeadData])
+  const [data, setData] = useState(Array.isArray(apolloLeadData) ? apolloLeadData : [])
   const [globalFilter, setGlobalFilter] = useState('')
 
   // Hooks

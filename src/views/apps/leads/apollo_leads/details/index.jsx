@@ -84,6 +84,7 @@
 
 // Next Imports
 import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
 
 // MUI Imports
 import Grid from '@mui/material/Grid';
@@ -119,8 +120,34 @@ const CustomBreadcrumb = dynamic(() => import('../../../../../components/bread-c
 });
 
 // This will be a server component (no 'use client' directive)
-const QuoteDetails = async ({ orderData, order }) => {
-  const data = await getEcommerceData();
+const QuoteDetails = ({ orderData, order }) => {
+  const [tableData, setTableData] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const loadTableData = async () => {
+      try {
+        const data = await getEcommerceData();
+
+        if (mounted) {
+          setTableData(data || null);
+        }
+      } catch (error) {
+        console.error('Failed to load apollo leads order data:', error);
+        if (mounted) {
+          setTableData(null);
+        }
+      }
+    };
+
+    loadTableData();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   const breadcrumbs = [
     { label: 'Home', path: '/' },
     { label: 'Apollo Leads', path: '/apps/leads/apollo_leads' },
@@ -130,19 +157,19 @@ const QuoteDetails = async ({ orderData, order }) => {
   const ordersPageTabs = [
     {
       label: 'Apollo Lead Accepted',
-      content: <OrderListTable orderData={data?.orderData} />
+      content: <OrderListTable orderData={tableData?.orderData} />
     },
     {
       label: 'Apollo Lead Rejected',
-      content: <OrderListTable orderData={data?.orderData} />
+      content: <OrderListTable orderData={tableData?.orderData} />
     },
     {
       label: 'Mcloud Leads',
-      content: <OrderListTable orderData={data?.orderData} />
+      content: <OrderListTable orderData={tableData?.orderData} />
     },
     {
       label: 'Marketing Leads',
-      content: <OrderListTable orderData={data?.orderData} />
+      content: <OrderListTable orderData={tableData?.orderData} />
     }
   ];
 

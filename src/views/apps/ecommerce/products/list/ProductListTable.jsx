@@ -101,7 +101,7 @@ const columnHelper = createColumnHelper()
 const ProductListTable = ({ productData }) => {
   // States
   const [rowSelection, setRowSelection] = useState({})
-  const [data, setData] = useState(...[productData])
+  const [data, setData] = useState(Array.isArray(productData) ? productData : [])
   const [filteredData, setFilteredData] = useState(data)
   const [globalFilter, setGlobalFilter] = useState('')
 

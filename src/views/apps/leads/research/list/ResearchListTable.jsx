@@ -95,7 +95,7 @@ const columnHelper = createColumnHelper()
 const AccountListTable = ({ researchData }) => {
   // States
   const [rowSelection, setRowSelection] = useState({})
-  const [data, setData] = useState(...[researchData])
+  const [data, setData] = useState(Array.isArray(researchData) ? researchData : [])
   const [globalFilter, setGlobalFilter] = useState('')
   const [addUserOpen, setAddUserOpen] = useState(false)
 

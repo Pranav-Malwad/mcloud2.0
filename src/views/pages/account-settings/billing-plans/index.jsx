@@ -1,5 +1,6 @@
 // MUI Imports
 import Grid from '@mui/material/Grid'
+import { useEffect, useState } from 'react'
 
 // Component Imports
 import CurrentPlan from './CurrentPlan'
@@ -36,15 +37,41 @@ import { getPricingData, getInvoiceData } from '@/app/server/actions'
 
   return res.json()
 } */
-const BillingPlans = async () => {
-  // Vars
-  const data = await getPricingData()
-  const invoiceData = await getInvoiceData()
+const BillingPlans = () => {
+  const [pricingData, setPricingData] = useState(null)
+  const [invoiceData, setInvoiceData] = useState(null)
+
+  useEffect(() => {
+    let mounted = true
+
+    const loadData = async () => {
+      try {
+        const [pricing, invoices] = await Promise.all([getPricingData(), getInvoiceData()])
+
+        if (mounted) {
+          setPricingData(pricing || null)
+          setInvoiceData(invoices || null)
+        }
+      } catch (error) {
+        console.error('Failed to load billing plans data:', error)
+        if (mounted) {
+          setPricingData(null)
+          setInvoiceData(null)
+        }
+      }
+    }
+
+    loadData()
+
+    return () => {
+      mounted = false
+    }
+  }, [])
 
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
-        <CurrentPlan data={data} />
+        <CurrentPlan data={pricingData} />
       </Grid>
       <Grid item xs={12}>
         <PaymentMethod />

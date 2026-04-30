@@ -174,7 +174,7 @@ const ProductCategoryTable = () => {
   // States
   const [addCategoryOpen, setAddCategoryOpen] = useState(false)
   const [rowSelection, setRowSelection] = useState({})
-  const [data, setData] = useState(...[categoryData])
+  const [data, setData] = useState(Array.isArray(categoryData) ? categoryData : [])
   const [globalFilter, setGlobalFilter] = useState('')
 
   const columns = useMemo(

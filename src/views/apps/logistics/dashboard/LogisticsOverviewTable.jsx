@@ -69,7 +69,7 @@ const LogisticsOverviewTable = ({ vehicleData }) => {
   // States
   const [rowSelection, setRowSelection] = useState({})
 
-  const [data, setData] = useState(...[vehicleData])
+  const [data, setData] = useState(Array.isArray(vehicleData) ? vehicleData : [])
 
   // Hooks
   const { lang: locale } = useParams()

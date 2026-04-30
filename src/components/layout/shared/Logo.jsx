@@ -6,12 +6,14 @@ import { useEffect, useRef } from 'react'
 // Third-party Imports
 import styled from '@emotion/styled'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 
 // Component Imports
 import MaterializeLogo from '@core/svg/Logo'
 
 // Config Imports
 import themeConfig from '@configs/themeConfig'
+import { getLocalizedUrl } from '@/utils/i18n'
 
 // Hook Imports
 import useVerticalNav from '@menu/hooks/useVerticalNav'
@@ -34,16 +36,18 @@ const LogoText = styled.span`
       : 'opacity: 1; margin-inline-start: 8px;'}
 `
 
-const Logo = ({ color, href = '/en/dashboards/crm' }) => {
+const Logo = ({ color, href }) => {
   // Refs
   const logoTextRef = useRef(null)
 
   // Hooks
   const { isHovered, transitionDuration, isBreakpointReached } = useVerticalNav()
   const { settings } = useSettings()
+  const { lang: locale } = useParams()
 
   // Vars
   const { layout } = settings
+  const resolvedHref = href || getLocalizedUrl(themeConfig.homePageUrl, locale)
 
   useEffect(() => {
     if (layout !== 'collapsed') {
@@ -61,7 +65,7 @@ const Logo = ({ color, href = '/en/dashboards/crm' }) => {
   }, [isHovered, layout, isBreakpointReached])
 
   return (
-    <Link href={href} className='flex items-center min-bs-[24px]'>
+    <Link href={resolvedHref} className='flex items-center min-bs-[24px]'>
       <MaterializeLogo />
       <LogoText
         color={color}

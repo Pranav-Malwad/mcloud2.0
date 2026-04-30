@@ -3,6 +3,7 @@
 // React Imports
 import { useState, useMemo } from 'react'
 import {  useRouter  } from 'next/navigation'
+import { useParams } from 'next/navigation'
 // MUI Imports
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
@@ -28,6 +29,7 @@ import {
 // Style Imports
 import tableStyles from '@core/styles/table.module.css'
 import { Button } from '@mui/material'
+import { getLocalizedUrl } from '@/utils/i18n'
 
 // Fuzzy filter function for searching
 const fuzzyFilter = (row, columnId, value, addMeta) => {
@@ -340,8 +342,9 @@ const OrderTable = () => {
 const OrderDetailsCard = () => {
 
   const router = useRouter();
+  const { lang: locale } = useParams()
   const handlePlaceOrderClick = () =>{
-  router.push('/apps/quotes/checkout')
+  router.push(getLocalizedUrl('/apps/quotes/checkout', locale))
   }
   return (
     <Card >

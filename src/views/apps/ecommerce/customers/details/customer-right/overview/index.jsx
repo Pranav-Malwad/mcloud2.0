@@ -1,5 +1,6 @@
 // MUI Imports
 import Grid from '@mui/material/Grid'
+import { useEffect, useState } from 'react'
 
 // Component Imports
 import CustomerStatisticsCard from './CustomerStatisticsCard'
@@ -40,15 +41,41 @@ import { getStatisticsData, getEcommerceData } from '@/app/server/actions'
 
   return res.json()
 } */
-const Overview = async () => {
-  // Vars
-  const data = await getStatisticsData()
-  const tableData = await getEcommerceData()
+const Overview = () => {
+  const [statsData, setStatsData] = useState(null)
+  const [tableData, setTableData] = useState(null)
+
+  useEffect(() => {
+    let mounted = true
+
+    const loadOverviewData = async () => {
+      try {
+        const [stats, ecommerce] = await Promise.all([getStatisticsData(), getEcommerceData()])
+
+        if (mounted) {
+          setStatsData(stats || null)
+          setTableData(ecommerce || null)
+        }
+      } catch (error) {
+        console.error('Failed to load ecommerce customer overview data:', error)
+        if (mounted) {
+          setStatsData(null)
+          setTableData(null)
+        }
+      }
+    }
+
+    loadOverviewData()
+
+    return () => {
+      mounted = false
+    }
+  }, [])
 
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
-        <CustomerStatisticsCard customerStatData={data?.customerStats} />
+        <CustomerStatisticsCard customerStatData={statsData?.customerStats} />
       </Grid>
       <Grid item xs={12}>
         <OrderListTable orderData={tableData?.orderData} />

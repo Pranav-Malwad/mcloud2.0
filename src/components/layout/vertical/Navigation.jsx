@@ -20,6 +20,7 @@ import { useSettings } from '@core/hooks/useSettings'
 
 // Util Imports
 import { getLocalizedUrl } from '@/utils/i18n'
+import themeConfig from '@configs/themeConfig'
 
 // Style Imports
 import navigationCustomStyles from '@core/styles/vertical/navigationCustomStyles'
@@ -124,7 +125,7 @@ const Navigation = props => {
     >
       {/* Nav Header including Logo & nav toggle icons  */}
       <NavHeader>
-        <Logo href={getLocalizedUrl('/', locale)} />
+        <Logo href={getLocalizedUrl(themeConfig.homePageUrl, locale)} />
         {!(isCollapsed && !isHovered) && (
           <NavCollapseIcons
             lockedIcon={MenuToggleSvg}

@@ -21,6 +21,7 @@ import useHorizontalNav from '@menu/hooks/useHorizontalNav'
 // Util Imports
 import { horizontalLayoutClasses } from '@layouts/utils/layoutClasses'
 import { getLocalizedUrl } from '@/utils/i18n'
+import themeConfig from '@configs/themeConfig'
 
 // Vars
 const shortcuts = [
@@ -127,7 +128,7 @@ const NavbarContent = () => {
       <div className='flex items-center gap-4'>
         <NavToggle />
         {/* Hide Logo on Smaller screens */}
-        {!isBreakpointReached && <Logo href={getLocalizedUrl('/', locale)} />}
+        {!isBreakpointReached && <Logo href={getLocalizedUrl(themeConfig.homePageUrl, locale)} />}
       </div>
 
       <div className='flex items-center'>

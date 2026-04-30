@@ -73,7 +73,7 @@ import dynamic from 'next/dynamic'
 
 // MUI Imports
 import Grid from '@mui/material/Grid'
-import React, { Suspense, lazy } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 
 // Shimmer Import
 import Shimmer from '../../../../components/shimmer-effect/index'
@@ -141,8 +141,34 @@ const tabContentList = () => ({
   Notification: <NotificationTab />
 })
 
-const CustomerDetails = async ({ customerData, customerId }) => {
-  const tableData = await getEcommerceData()
+const CustomerDetails = ({ customerData, customerId }) => {
+  const [tableData, setTableData] = useState(null)
+
+  useEffect(() => {
+    let mounted = true
+
+    const loadTableData = async () => {
+      try {
+        const data = await getEcommerceData()
+
+        if (mounted) {
+          setTableData(data || null)
+        }
+      } catch (error) {
+        console.error('Failed to load account details table data:', error)
+        if (mounted) {
+          setTableData(null)
+        }
+      }
+    }
+
+    loadTableData()
+
+    return () => {
+      mounted = false
+    }
+  }, [])
+
   const quotesTabs = [
     {
       label: 'Associated Quote',
@@ -164,7 +190,7 @@ const CustomerDetails = async ({ customerData, customerId }) => {
   const breadcrumbs = [
     { label: 'Home', path: '/' },
     { label: 'Accounts', path: '/apps/accounts' },
-    { label: `Account #${customerId || 'ID'}`, path: `/accounts/${customerId || 'ID'}` }
+    { label: `Account #${customerId || 'ID'}`, path: `/apps/accounts/details/${customerId || 'ID'}` }
   ]
 
   return (

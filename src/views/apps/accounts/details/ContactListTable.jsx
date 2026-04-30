@@ -91,7 +91,7 @@ const columnHelper = createColumnHelper()
 const ContactListTable = ({ orderData }) => {
   // States
   const [rowSelection, setRowSelection] = useState({})
-  const [data, setData] = useState(...[orderData])
+  const [data, setData] = useState(Array.isArray(orderData) ? orderData : [])
   const [globalFilter, setGlobalFilter] = useState('')
 
   // Hooks

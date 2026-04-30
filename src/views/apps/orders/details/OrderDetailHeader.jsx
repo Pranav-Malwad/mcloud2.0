@@ -3,7 +3,8 @@
 import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
 import Typography from '@mui/material/Typography'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
+import { getLocalizedUrl } from '@/utils/i18n'
 // Component Imports
 
 import ConfirmationDialog from '@components/dialogs/confirmation-dialog'
@@ -32,8 +33,9 @@ const OrderDetailHeader = ({ orderData, order }) => {
 
   // const { isEditing, toggleEdit, handleSave } = useEdit() // Access global state
   const router = useRouter()
+  const { lang: locale } = useParams()
   const handleNewTask = () => {
-    router.push('/apps/tasks')
+    router.push(getLocalizedUrl('/apps/tasks', locale))
   }
 
   return (

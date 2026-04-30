@@ -96,7 +96,7 @@ const OpenTasks = ({ orderData }) => {
   const [rowSelection, setRowSelection] = useState({})
   const [addUserOpen, setAddUserOpen] = useState(false)
 
-  const [data, setData] = useState(...[orderData])
+  const [data, setData] = useState(Array.isArray(orderData) ? orderData : [])
   const [globalFilter, setGlobalFilter] = useState('')
 
   // Hooks

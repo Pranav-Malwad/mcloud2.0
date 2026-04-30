@@ -80,7 +80,7 @@ const CourseTable = ({ courseData }) => {
   // States
   const [rowSelection, setRowSelection] = useState({})
 
-  const [data, setData] = useState(...[courseData])
+  const [data, setData] = useState(Array.isArray(courseData) ? courseData : [])
   const [globalFilter, setGlobalFilter] = useState('')
 
   // Hooks

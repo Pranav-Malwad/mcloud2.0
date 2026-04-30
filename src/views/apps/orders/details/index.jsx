@@ -115,7 +115,7 @@ const OrderDetails = ({ orderData, order }) => {
   const breadcrumbs = [
     { label: 'Home', path: '/' },
     { label: 'Orders', path: '/apps/orders' },
-    { label: `Order #${order || 'ID'}`, path: `/orders/${order || 'ID'}` }
+    { label: `Order #${order || 'ID'}`, path: `/apps/orders/details/${order || 'ID'}` }
   ]
 
   return (

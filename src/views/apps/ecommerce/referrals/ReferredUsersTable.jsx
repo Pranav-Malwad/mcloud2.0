@@ -67,7 +67,7 @@ const ReferredUsersTable = ({ referralsData }) => {
   // States
   const [rowSelection, setRowSelection] = useState({})
 
-  const [data, setData] = useState(...[referralsData])
+  const [data, setData] = useState(Array.isArray(referralsData) ? referralsData : [])
 
   // Hooks
   const { lang: locale } = useParams()

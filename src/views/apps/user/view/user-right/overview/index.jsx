@@ -1,5 +1,6 @@
 // MUI Imports
 import Grid from '@mui/material/Grid'
+import { useEffect, useState } from 'react'
 
 // Component Imports
 import ProjectListTable from './ProjectListTable'
@@ -24,9 +25,33 @@ import { getInvoiceData } from '@/app/server/actions'
 
   return res.json()
 } */
-const OverViewTab = async () => {
-  // Vars
-  const invoiceData = await getInvoiceData()
+const OverViewTab = () => {
+  const [invoiceData, setInvoiceData] = useState(null)
+
+  useEffect(() => {
+    let mounted = true
+
+    const loadInvoiceData = async () => {
+      try {
+        const data = await getInvoiceData()
+
+        if (mounted) {
+          setInvoiceData(data || null)
+        }
+      } catch (error) {
+        console.error('Failed to load user overview invoice data:', error)
+        if (mounted) {
+          setInvoiceData(null)
+        }
+      }
+    }
+
+    loadInvoiceData()
+
+    return () => {
+      mounted = false
+    }
+  }, [])
 
   return (
     <Grid container spacing={6}>
