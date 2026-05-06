@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { BlankShell, DashboardShell, FrontPagesShell, GuestShell } from '@/router/RouteShells'
+import { i18n } from '@configs/i18n'
 
 const pageModules = import.meta.glob('../app/**/page.jsx')
 
@@ -71,6 +72,7 @@ const blankOnlyPathPatterns = [
 const isFrontPagePath = path => path.startsWith('/front-pages')
 const isGuestPath = path => guestPathPatterns.includes(path)
 const isBlankOnlyPath = path => blankOnlyPathPatterns.includes(path)
+const defaultLocale = i18n.defaultLocale || 'en'
 
 const wrapElement = (path, Component) => {
   const lazyElement = (
@@ -80,20 +82,20 @@ const wrapElement = (path, Component) => {
   )
 
   if (isFrontPagePath(path)) return <FrontPagesShell>{lazyElement}</FrontPagesShell>
-  if (isGuestPath(path)) return <GuestShell lang='en'>{lazyElement}</GuestShell>
+  if (isGuestPath(path)) return <GuestShell>{lazyElement}</GuestShell>
   if (isBlankOnlyPath(path)) return <BlankShell>{lazyElement}</BlankShell>
 
-  return <DashboardShell lang='en'>{lazyElement}</DashboardShell>
+  return <DashboardShell>{lazyElement}</DashboardShell>
 }
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path='/' element={<Navigate to='/en/dashboards/crm' replace />} />
+      <Route path='/' element={<Navigate to={`/${defaultLocale}/dashboards/crm`} replace />} />
       {generatedRoutes.map(({ path, Component }) => (
         <Route key={path} path={path} element={wrapElement(path, Component)} />
       ))}
-      <Route path='*' element={<Navigate to='/en/pages/misc/404-not-found' replace />} />
+      <Route path='*' element={<Navigate to={`/${defaultLocale}/pages/misc/404-not-found`} replace />} />
     </Routes>
   )
 }
