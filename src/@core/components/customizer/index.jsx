@@ -441,7 +441,7 @@ const Customizer = ({ breakpoint = 'lg', dir = 'ltr', disableDirection = false }
                         </p>
                       </div>
                     </Link>
-                    <Link href={getLocalePath(pathName, 'ar')}>
+                    {/* <Link href={getLocalePath(pathName, 'ar')}>
                       <div className='flex flex-col items-start gap-0.5'>
                         <div
                           className={classnames(styles.itemWrapper, {
@@ -455,7 +455,7 @@ const Customizer = ({ breakpoint = 'lg', dir = 'ltr', disableDirection = false }
                           (Arabic)
                         </p>
                       </div>
-                    </Link>
+                    </Link> */}
                   </div>
                 </div>
               )}
