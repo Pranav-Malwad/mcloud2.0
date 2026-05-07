@@ -122,8 +122,6 @@ import Grid from '@mui/material/Grid';
 // Shimmer Effect Import
 import Shimmer from '../../../../../components/shimmer-effect'; // Adjust the path as necessary
 
-// Lazy load component imports
-const CustomBreadcrumb = lazy(() => import('../../../../../components/bread-crumbs'));
 const CardCounters = lazy(() => import('@/components/counter-cards'));
 const TabsPanel = lazy(() => import('@/components/tabs-panel'));
 const LeadsListTable = lazy(() => import('./LeadsListTable'));
@@ -210,19 +208,11 @@ const OrderList = ({ leadData }) => {
     }
   ];
 
-  const breadcrumbs = [
-    { label: 'Home', path: '/' },
-    { label: 'Leads', path: '/apps/leads/leads' },
-  ];
+
 
   return (
     <div className={isLoaded ? 'visible' : 'hidden'}>
-    <Grid container spacing={6}>
-      <Grid item xs={12}>
-        <Suspense fallback={<Shimmer variant="rectangular" width="100%" height={50} />}>
-          <CustomBreadcrumb breadcrumbs={breadcrumbs} />
-        </Suspense>
-      </Grid>
+      <Grid container spacing={6}>
       <Grid item xs={12}>
         <Suspense fallback={<Shimmer variant="rectangular" width="100%" height={150} />}>
           <CardCounters entityType='Leads' counts={orderCounts} />

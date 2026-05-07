@@ -9,7 +9,6 @@ import Grid from '@mui/material/Grid'
 // Component Imports
 const TasksListTable = React.lazy(() => import('./TasksListTable'))
 const TabsPanel = React.lazy(() => import('../../../../components/tabs-panel/index'))
-const CustomBreadcrumb = React.lazy(() => import('../../../../components/bread-crumbs/index'))
 
 // Shimmer Component Import
 import Shimmer from '../../../../components/shimmer-effect'
@@ -41,19 +40,11 @@ const TasksList = ({ taskData }) => {
     },
   ]
 
-  const breadcrumbs = [
-    { label: 'Home', path: '/' },
-    { label: 'Tasks', path: '/apps/tasks' },
-  ]
+
 
   return (
     <div className={isLoaded ? 'visible' : 'hidden'}>
       <Grid container spacing={6}>
-        <Grid item xs={12}>
-          <Suspense fallback={<Shimmer variant="text" width="100%" height={50} />}>
-            <CustomBreadcrumb breadcrumbs={breadcrumbs} />
-          </Suspense>
-        </Grid>
         <Grid item xs={12}>
           <Suspense fallback={<Shimmer variant="rectangular" width="100%" height={150} />}>
             <TabsPanel tabs={TasksPageTabs} />

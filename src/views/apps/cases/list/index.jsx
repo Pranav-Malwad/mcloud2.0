@@ -36,8 +36,6 @@ import Grid from '@mui/material/Grid';
 // Shimmer Component Import
 import Shimmer from '../../../../components/shimmer-effect'; // Adjust the path as necessary
 
-// Lazy load component imports
-const CustomBreadcrumb = lazy(() => import('../../../../components/bread-crumbs/index'));
 const CaseListTable = lazy(() => import('./CaseListTable'));
 
 const CasesList = ({ orderData }) => {
@@ -50,19 +48,11 @@ const CasesList = ({ orderData }) => {
   }, [])
 
 
-  const breadcrumbs = [
-    { label: 'Home', path: '/' },
-    { label: 'Cases', path: '/apps/cases' },
-  ];
+
 
   return (
     <div className={isLoaded ? 'visible' : 'hidden'}>
-    <Grid container spacing={6}>
-      <Grid item xs={12}>
-        <Suspense fallback={<Shimmer variant="rectangular" width="100%" height={50} />}>
-          <CustomBreadcrumb breadcrumbs={breadcrumbs} />
-        </Suspense>
-      </Grid>
+      <Grid container spacing={6}>
       <Grid item xs={12}>
         <Suspense fallback={<Shimmer variant="rectangular" width="100%" height={400} />}>
           <CaseListTable orderData={orderData} />

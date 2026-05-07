@@ -59,8 +59,12 @@ const preferences = () => {
     
       
       <Card className='p-4'>
-      {/* Legal and Preferences */}
-      <Typography variant="h6" gutterBottom >Legal and Preferences</Typography>
+      <div className='flex justify-between items-center mb-4'>
+        <Typography variant='h5'>Legal and Preferences</Typography>
+        <Button variant='contained' onClick={handleEditToggle} startIcon={<i className={isEditing ? 'ri-save-line' : 'ri-edit-box-line'} />} size='small'>
+          {isEditing ? 'Save Changes' : 'Edit Preferences'}
+        </Button>
+      </div>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Checkbox checked={formData.nda} name="nda" onChange={handleChange} disabled={!isEditing} /> Non-Disclosure Agreement
@@ -70,11 +74,7 @@ const preferences = () => {
         </Grid>
       </Grid>
       
-      <div className='mt-4'>
-        <Button variant="contained" onClick={handleEditToggle}>
-          {isEditing ? 'Save' : 'Edit'}
-        </Button>
-      </div>
+
       </Card>
     
     

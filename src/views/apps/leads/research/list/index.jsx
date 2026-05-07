@@ -36,7 +36,6 @@ import ShimmerEffect from '../../../../../components/shimmer-effect/index';
 
 // Lazy load component imports
 const ResearchListTable = lazy(() => import('./ResearchListTable'));
-const CustomBreadcrumb = lazy(() => import('../../../../../components/bread-crumbs/index'));
 
 const ResearchList = ({ researchData }) => {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -46,19 +45,10 @@ const ResearchList = ({ researchData }) => {
   }, [])
 
 
-  const breadcrumbs = [
-    { label: 'Home', path: '/' },
-    { label: 'Research', path: '/apps/research' },
-  ];
 
   return (
     <div className={isLoaded ? 'visible' : 'hidden'}>
-    <Grid container spacing={6}>
-      <Grid item xs={12}>
-        <Suspense fallback={<ShimmerEffect variant="rectangular" width="100%" height={50} />}>
-          <CustomBreadcrumb breadcrumbs={breadcrumbs} />
-        </Suspense>
-      </Grid>
+      <Grid container spacing={6}>
       <Grid item xs={12}>
         <Suspense fallback={<ShimmerEffect variant="rectangular" width="100%" height={400} />}>
           <ResearchListTable researchData={researchData} />

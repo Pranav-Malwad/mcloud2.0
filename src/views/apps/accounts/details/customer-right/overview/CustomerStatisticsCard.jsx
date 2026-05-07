@@ -6,9 +6,9 @@ import CustomerStats from '@components/card-statistics/CustomerStats'
 
 const CustomerStatisticsCard = ({ customerStatData }) => {
   return (
-    <Grid container spacing={6}>
+    <Grid container spacing={4}>
       {customerStatData?.map((item, index) => (
-        <Grid item xs={12} md={6} key={index}>
+        <Grid item xs={12} sm={4} key={index}>
           <CustomerStats {...item} />
         </Grid>
       ))}

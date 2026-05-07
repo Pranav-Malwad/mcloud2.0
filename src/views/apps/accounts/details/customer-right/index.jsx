@@ -24,7 +24,7 @@ const CustomerRight = ({ tabContentList }) => {
     <>
       <TabContext value={activeTab}>
         <Grid container spacing={6}>
-          <Grid item xs={12}>
+          <Grid item xs={12} sx={{ position: 'sticky', top: '65px', zIndex: 10, bgcolor: 'background.default' }}>
             <CustomTabList onChange={handleChange} variant='scrollable' pill='true'>
               <Tab icon={<i className='ri-user-3-line' />} value='overview' label='Overview' iconPosition='start' />
 
@@ -36,14 +36,23 @@ const CustomerRight = ({ tabContentList }) => {
               />
 
               <Tab
+                icon={<i className='ri-file-list-3-line' />}
+                value='quotes'
+                label='Associated Quotes'
+                iconPosition='start'
+              />
+              <Tab
+                icon={<i className='ri-contacts-book-2-line' />}
+                value='contacts'
+                label='Associated Contacts'
+                iconPosition='start'
+              />
+              <Tab
                 icon={<i className='ri-notification-2-line' />}
                 value='preferences'
                 label='Preferences'
                 iconPosition='start'
               />
-
-               
-
               {/* <Tab icon={<i className='ri-lock-line' />} value='security' label='Security' iconPosition='start' /> */}
             </CustomTabList>
           </Grid>

@@ -133,7 +133,7 @@ const FeedbackTable = lazy(() => import('./FeedbackTable'));
 const CompletedOrders = lazy(() => import('./CompletedOrders'));
 const RejectedOrders = lazy(() => import('./RejectedOrders'));
 const TotalOrders = lazy(() => import('./TotalOrders'));
-const CustomBreadcrumb = lazy(() => import('../../../../components/bread-crumbs/index'));
+
 
 const OrderList = ({ orderData }) => {
 
@@ -210,19 +210,11 @@ const OrderList = ({ orderData }) => {
     }
   ]
 
-  const breadcrumbs = [
-    { label: 'Home', path: '/' },
-    { label: 'Orders', path: '/apps/orders' },
-  ]
+
 
   return (
     <div className={isLoaded ? 'visible' : 'hidden'}>
-    <Grid container spacing={6}>
-      <Grid item xs={12}>
-        <Suspense fallback={<Shimmer variant="rectangular" width="100%" height={50} />}>
-          <CustomBreadcrumb breadcrumbs={breadcrumbs} />
-        </Suspense>
-      </Grid>
+      <Grid container spacing={6}>
       <Grid item xs={12}>
         <Suspense fallback={<Shimmer variant="rectangular" width="100%" height={400} />}>
           <CardCounters entityType='Orders' counts={orderCounts} />

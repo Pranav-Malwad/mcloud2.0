@@ -19,15 +19,15 @@ const HorizontalWithSubtitle = props => {
         <div className='flex flex-col gap-1 flex-grow'>
           <Typography color='text.primary'>{title}</Typography>
           <div className='flex items-center gap-2 flex-wrap'>
-            <Typography variant='h4'>{stats}</Typography>
+            <Typography variant='h5'>{stats}</Typography>
             <Typography color={trend === 'negative' ? 'error.main' : 'success.main'}>
               {`(${trend === 'negative' ? '-' : '+'}${trendNumber})`}
             </Typography>
           </div>
           <Typography variant='body2'>{subtitle}</Typography>
         </div>
-        <CustomAvatar color={avatarColor} skin='light' variant='rounded' size={42}>
-          <i className={classnames(avatarIcon, 'text-[26px]')} />
+        <CustomAvatar color={avatarColor} skin='light' variant='rounded' size={34}>
+          <i className={classnames(avatarIcon, 'text-[22px]')} />
         </CustomAvatar>
       </CardContent>
     </Card>

@@ -31,6 +31,7 @@ import CustomInputHorizontal from '@core/components/custom-inputs/Horizontal'
 const countries = ['Select Country', 'France', 'Russia', 'China', 'UK', 'US']
 
 const initialAddressData = {
+  id: '',
   firstName: '',
   lastName: '',
   phone: '', // Added phone field
@@ -40,7 +41,8 @@ const initialAddressData = {
   landmark: '',
   city: '',
   state: '',
-  zipCode: ''
+  zipCode: '',
+  isDefaultAddress: false
 }
 
 // Styled Components
@@ -63,7 +65,7 @@ const customInputData = [
       </Title>
     ),
     content: 'Delivery Time (7am - 9pm)',
-    value: 'shipping',
+    value: 'Shipping',
     isSelected: true
   },
   {
@@ -76,13 +78,13 @@ const customInputData = [
       </Title>
     ),
     content: 'Delivery Time (10am - 6pm)',
-    value: 'billing'
+    value: 'Billing'
   }
 ]
 
-const AddEditAddress = ({ open, setOpen, data }) => {
+const AddEditAddress = ({ open, setOpen, data, onSave, addressType }) => {
   // Vars
-  const initialSelected = customInputData?.find(item => item.isSelected)?.value || ''
+  const initialSelected = addressType || data?.typeOfAddress || customInputData?.find(item => item.isSelected)?.value || 'Shipping'
 
   // States
   const [selected, setSelected] = useState(initialSelected)
@@ -97,9 +99,19 @@ const AddEditAddress = ({ open, setOpen, data }) => {
   }
 
   useEffect(() => {
-    setAddressData(data ?? initialAddressData)
+    setAddressData(data ? { ...initialAddressData, ...data } : initialAddressData)
+    setSelected(addressType || data?.typeOfAddress || 'Shipping')
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open])
+  }, [open, data, addressType])
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (onSave) {
+      onSave({ ...addressData, typeOfAddress: selected })
+    }
+    setOpen(false)
+    setSelected(initialSelected)
+  }
 
   return (
     <Dialog
@@ -111,18 +123,26 @@ const AddEditAddress = ({ open, setOpen, data }) => {
         setSelected(initialSelected)
       }}
     >
-      <DialogTitle variant='h4' className='flex gap-2 flex-col text-center sm:pbs-16 sm:pbe-6 sm:pli-16'>
+      <DialogTitle variant='h4' sx={{ textAlign: 'center', pt: 4, pb: 4 }}>
         {data ? 'Edit Address' : 'Add New Address'}
-        <Typography component='span' className='flex flex-col text-center'>
+        <Typography variant='body1' sx={{ mt: 1, color: 'text.secondary' }}>
           {data ? 'Edit Address for future billing' : 'Add address for billing or shipping'}
         </Typography>
       </DialogTitle>
-      <form onSubmit={e => e.preventDefault()}>
-        <DialogContent className='pbs-0 sm:pbe-6 sm:pli-16'>
-          <IconButton onClick={() => setOpen(false)} className='absolute block-start-4 inline-end-4'>
-            <i className='ri-close-line text-textSecondary' />
+      <form onSubmit={handleSubmit}>
+        <DialogContent className='pbs-0 sm:pbe-4 sm:pli-8'>
+          <IconButton
+            onClick={() => setOpen(false)}
+            sx={{
+              position: 'absolute',
+              right: 16,
+              top: 16,
+              color: 'text.secondary'
+            }}
+          >
+            <i className='ri-close-line' />
           </IconButton>
-          <Grid container spacing={5}>
+          <Grid container spacing={4}>
             {customInputData.map((item, index) => (
               <Grid item xs={12} sm={6} key={index}>
                 <CustomInputHorizontal
@@ -138,38 +158,41 @@ const AddEditAddress = ({ open, setOpen, data }) => {
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
+                size='small'
                 label='First Name'
                 name='firstName'
                 variant='outlined'
                 placeholder='John'
-                value={addressData?.firstName}
+                value={addressData?.firstName || ''}
                 onChange={e => setAddressData({ ...addressData, firstName: e.target.value })}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
+                size='small'
                 label='Last Name'
                 name='lastName'
                 variant='outlined'
                 placeholder='Doe'
-                value={addressData?.lastName}
+                value={addressData?.lastName || ''}
                 onChange={e => setAddressData({ ...addressData, lastName: e.target.value })}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
+                size='small'
                 label='Phone Number'
                 name='phone'
                 variant='outlined'
                 placeholder='(123) 456-7890'
-                value={addressData?.phone}
+                value={addressData?.phone || ''}
                 onChange={e => setAddressData({ ...addressData, phone: e.target.value })}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
+              <FormControl fullWidth size='small'>
                 <InputLabel>Country</InputLabel>
                 <Select
                   label='Country'
@@ -189,77 +212,91 @@ const AddEditAddress = ({ open, setOpen, data }) => {
             <Grid item xs={12}>
               <TextField
                 fullWidth
+                size='small'
                 label='Address Line 1'
                 name='address1'
                 variant='outlined'
                 placeholder='12, Business Park'
-                value={addressData?.address1}
+                value={addressData?.address1 || ''}
                 onChange={e => setAddressData({ ...addressData, address1: e.target.value })}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 fullWidth
+                size='small'
                 label='Address Line 2'
                 name='address2'
                 variant='outlined'
                 placeholder='Mall Road'
-                value={addressData?.address2}
+                value={addressData?.address2 || ''}
                 onChange={e => setAddressData({ ...addressData, address2: e.target.value })}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
+                size='small'
                 label='Landmark'
                 name='landmark'
                 variant='outlined'
                 placeholder='Nr. Hard Rock Cafe'
-                value={addressData?.landmark}
+                value={addressData?.landmark || ''}
                 onChange={e => setAddressData({ ...addressData, landmark: e.target.value })}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
+                size='small'
                 label='City'
                 name='city'
                 variant='outlined'
                 placeholder='Los Angeles'
-                value={addressData?.city}
+                value={addressData?.city || ''}
                 onChange={e => setAddressData({ ...addressData, city: e.target.value })}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
+                size='small'
                 label='State'
                 name='state'
                 variant='outlined'
                 placeholder='California'
-                value={addressData?.state}
+                value={addressData?.state || ''}
                 onChange={e => setAddressData({ ...addressData, state: e.target.value })}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
+                size='small'
                 label='Zip Code'
                 type='number'
                 name='zipCode'
                 variant='outlined'
                 placeholder='99950'
-                value={addressData?.zipCode}
+                value={addressData?.zipCode || ''}
                 onChange={e => setAddressData({ ...addressData, zipCode: e.target.value })}
               />
             </Grid>
-            <Grid item xs={12} className='sm:pbs-6'>
-              <FormControlLabel control={<Switch defaultChecked />} label='Make this default address' />
+            <Grid item xs={12} className='sm:pbs-2'>
+              <FormControlLabel 
+                control={
+                  <Switch 
+                    checked={addressData?.isDefaultAddress || false} 
+                    onChange={e => setAddressData({ ...addressData, isDefaultAddress: e.target.checked })} 
+                  />
+                } 
+                label='Make this default address' 
+              />
             </Grid>
           </Grid>
         </DialogContent>
-        <DialogActions className='justify-center pbs-0 sm:pbe-16 sm:pli-16'>
-          <Button variant='contained' onClick={() => setOpen(false)} type='submit'>
+        <DialogActions className='justify-center pbs-0 sm:pbe-8 sm:pli-8'>
+          <Button variant='contained' type='submit'>
             {data ? 'Update' : 'Submit'}
           </Button>
           <Button

@@ -160,12 +160,12 @@ const input = {
       input: ({ theme, ownerState }) => ({
         ...(ownerState?.size === 'medium' && {
           '&:not(.MuiInputBase-inputMultiline)': {
-            padding: theme.spacing(4)
+            padding: theme.spacing(3, 4)
           }
         }),
         ...(ownerState?.size === 'small' && {
           '&:not(.MuiInputBase-inputMultiline)': {
-            padding: theme.spacing(2, 4)
+            padding: theme.spacing(1.5, 4)
           }
         }),
         blockSize: '1.6em',

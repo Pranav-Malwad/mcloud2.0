@@ -51,7 +51,6 @@ import Shimmer from '../../../../components/shimmer-effect/index';
 // Lazy Load Components
 const CardCounters = lazy(() => import('@/components/counter-cards'));
 const AccountListTable = lazy(() => import('./AccountListTable'));
-const CustomBreadcrumb = lazy(() => import('../../../../components/bread-crumbs/index'));
 
 const ContactList = ({ customerData }) => {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -66,20 +65,12 @@ const ContactList = ({ customerData }) => {
     total: 21459,
   };
 
-  const breadcrumbs = [
-    { label: 'Home', path: '/' },
-    { label: 'Accounts', path: '/apps/accounts' },
-  ];
+
 
   return (
     <div className={isLoaded ? 'visible' : 'hidden'}>
 
     <Grid container spacing={6}>
-      <Grid item xs={12}>
-        <Suspense fallback={<Shimmer variant="rectangular" width="100%" height={60} />}>
-          <CustomBreadcrumb breadcrumbs={breadcrumbs} />
-        </Suspense>
-      </Grid>
       <Grid item xs={12}>
         <Suspense fallback={<Shimmer variant="rectangular" width="100%" height={80} />}>
           <CardCounters entityType='Accounts' counts={accountCounts} />

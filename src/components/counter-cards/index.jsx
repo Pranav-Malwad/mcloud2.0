@@ -84,7 +84,7 @@ const CardCounters = ({ entityType, counts }) => {
   ]
 
   return (
-    <Grid container spacing={6} >
+    <Grid container spacing={4} >
       {data.map((item, i) => (
         <Grid key={i} item xs={12} sm={6} md={3}>
           <HorizontalWithSubtitle {...item} />

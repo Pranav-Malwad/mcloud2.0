@@ -57,8 +57,12 @@ const ShippingAndBilling = () => {
   return (
     <Card className='p-4'>
 
-      {/* Shipping Info */}
-      <Typography variant="h6" gutterBottom >Shipping Info</Typography>
+      <div className='flex justify-between items-center mb-4'>
+        <Typography variant='h5'>Shipping Info</Typography>
+        <Button variant='contained' onClick={handleEditToggle} startIcon={<i className={isEditing ? 'ri-save-line' : 'ri-edit-box-line'} />} size='small'>
+          {isEditing ? 'Save Changes' : 'Edit Information'}
+        </Button>
+      </div>
       <Grid container spacing={4}>
         <Grid item xs={12}>
           <Checkbox checked={formData.sameAsBillingAddress} name="sameAsBillingAddress" onChange={handleChange} disabled={!isEditing} /> Same as Billing Address
@@ -114,11 +118,7 @@ const ShippingAndBilling = () => {
           <TextField label="Billing Country" name="billingCountry" value={formData.billingCountry} onChange={handleChange} disabled={!isEditing} fullWidth />
         </Grid>
       </Grid>
-      <div className='mt-4'>
-          <Button variant='contained' onClick={handleEditToggle}>
-            {isEditing ? 'Save' : 'Edit'}
-          </Button>
-        </div>
+
     </Card>
   );
 };

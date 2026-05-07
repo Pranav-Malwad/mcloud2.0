@@ -145,7 +145,6 @@ import Grid from '@mui/material/Grid'
 const QuoteListTable = React.lazy(() => import('./QuoteListTable'))
 const CardCounters = React.lazy(() => import('@/components/counter-cards'))
 const TabsPanel = React.lazy(() => import('../../../../components/tabs-panel'))
-const CustomBreadcrumb = React.lazy(() => import('../../../../components/bread-crumbs'))
 import Shimmer from '../../../../components/shimmer-effect'
 import Forecast from './ForeCast'
 
@@ -233,19 +232,11 @@ const OrderList = ({ orderData }) => {
     }
   ]
 
-  const breadcrumbs = [
-    { label: 'Home', path: '/' },
-    { label: 'Quotes', path: '/apps/quotes' }
-  ]
+
 
   return (
     <div className={isLoaded ? 'visible' : 'hidden'}>
       <Grid container spacing={6}>
-        <Grid item xs={12}>
-          <Suspense fallback={<Shimmer variant='text' width='100%' height={50} />}>
-            <CustomBreadcrumb breadcrumbs={breadcrumbs} />
-          </Suspense>
-        </Grid>
         <Grid item xs={12}>
           <Suspense fallback={<Shimmer variant='rectangular' width='100%' height={150} />}>
             <CardCounters entityType='Quotes' counts={quotesCount} />

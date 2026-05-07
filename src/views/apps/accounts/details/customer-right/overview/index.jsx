@@ -42,7 +42,9 @@ import CustomerStatisticsCard from './CustomerStatisticsCard'
 
   return res.json()
 } */
-const Overview = () => {
+import CustomerProfileHeader from './CustomerProfileHeader'
+
+const Overview = ({ customerData }) => {
   const [statsData, setStatsData] = useState(null)
 
   useEffect(() => {
@@ -73,6 +75,9 @@ const Overview = () => {
 
   return (
     <Grid container spacing={6}>
+      <Grid item xs={12}>
+        <CustomerProfileHeader customerData={customerData} />
+      </Grid>
        <Grid item xs={12}>
         <CustomerStatisticsCard customerStatData={statsData?.customerStats} />
       </Grid>

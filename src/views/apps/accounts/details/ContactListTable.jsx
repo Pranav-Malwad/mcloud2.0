@@ -173,7 +173,7 @@ const ContactListTable = ({ orderData }) => {
     },
     initialState: {
       pagination: {
-        pageSize: 10
+        pageSize: 5
       }
     },
     enableRowSelection: true, //enable row selection for all rows
@@ -201,7 +201,7 @@ const ContactListTable = ({ orderData }) => {
           className='max-sm:is-full'
         />
       </CardContent>
-      <div className='overflow-x-auto'>
+      <div className='overflow-x-auto overflow-y-auto' style={{ maxHeight: '450px' }}>
         <table className={tableStyles.table}>
           <thead>
             {table.getHeaderGroups().map(headerGroup => (
@@ -234,7 +234,11 @@ const ContactListTable = ({ orderData }) => {
             <tbody>
               <tr>
                 <td colSpan={table.getVisibleFlatColumns().length} className='text-center'>
-                  No data available
+                  <div className='flex flex-col items-center justify-center p-10 text-textSecondary'>
+                    <i className='ri-contacts-book-2-line text-5xl mb-2 opacity-50' />
+                    <Typography variant='h6' color='text.secondary'>No Contacts Found</Typography>
+                    <Typography variant='body2' color='text.disabled'>There are currently no contacts associated with this account.</Typography>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -257,7 +261,7 @@ const ContactListTable = ({ orderData }) => {
         </table>
       </div>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 50, 100]}
+        rowsPerPageOptions={[5, 10, 25, 50, 100]}
         component='div'
         className='border-bs'
         count={table.getFilteredRowModel().rows.length}

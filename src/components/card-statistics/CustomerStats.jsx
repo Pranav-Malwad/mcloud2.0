@@ -13,26 +13,28 @@ const CustomerStats = props => {
 
   return (
     <Card>
-      <CardContent className='flex flex-col gap-2'>
-        <CustomAvatar variant='rounded' skin='light' color={color}>
-          <i className={avatarIcon} />
-        </CustomAvatar>
-        <Typography variant='h5' className='capitalize'>
-          {title}
-        </Typography>
+      <CardContent sx={{ p: 3, '&:last-child': { pb: 3 } }} className='flex flex-col gap-1'>
+        <div className='flex items-center gap-3 mb-1'>
+          <CustomAvatar variant='rounded' skin='light' color={color} size={34}>
+            <i className={avatarIcon} />
+          </CustomAvatar>
+          <Typography variant='subtitle1' className='capitalize font-medium leading-tight'>
+            {title}
+          </Typography>
+        </div>
 
         <div className='flex flex-col items-start'>
           {stats ? (
-            <div className='flex items-center gap-1'>
-              <Typography variant='h5' color={`${color}.main`}>
+            <div className='flex items-baseline gap-1.5'>
+              <Typography variant='subtitle1' className='font-semibold' color={`${color}.main`}>
                 {stats}
               </Typography>
-              <Typography>{content}</Typography>
+              <Typography variant='body2' color='text.secondary'>{content}</Typography>
             </div>
           ) : (
             <Chip variant='tonal' label={chipLabel} color={color} size='small' className='mbe-1' />
           )}
-          <Typography>{description}</Typography>
+          <Typography variant='caption' color='text.disabled'>{description}</Typography>
         </div>
       </CardContent>
     </Card>
