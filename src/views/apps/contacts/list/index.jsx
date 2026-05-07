@@ -75,7 +75,7 @@ const ContactList = ({ customerData }) => {
 
   return (
     <div className={isLoaded ? 'visible' : 'hidden'}>
-      <Grid container spacing={6}>
+      <Grid container spacing={4}>
       <Grid item xs={12}>
         <Suspense fallback={<Shimmer variant="rectangular" width="100%" height={80} />}>
           <CardCounters entityType='Contacts' counts={contactCounts} />
