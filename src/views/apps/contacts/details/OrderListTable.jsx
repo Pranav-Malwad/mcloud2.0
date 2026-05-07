@@ -173,7 +173,7 @@ const OrderListTable = ({ orderData }) => {
     },
     initialState: {
       pagination: {
-        pageSize: 10
+        pageSize: 5
       }
     },
     enableRowSelection: true, //enable row selection for all rows
@@ -193,7 +193,7 @@ const OrderListTable = ({ orderData }) => {
   return (
     <Card>
       <CardContent className='flex justify-between flex-col items-start sm:flex-row sm:items-center gap-y-4'>
-        <Typography variant='h5'>Associated Quotes </Typography>
+        <Typography variant='h5'>Associated Orders</Typography>
         <DebouncedInput
           value={globalFilter ?? ''}
           onChange={value => setGlobalFilter(String(value))}
@@ -201,7 +201,7 @@ const OrderListTable = ({ orderData }) => {
           className='max-sm:is-full'
         />
       </CardContent>
-      <div className='overflow-x-auto'>
+      <div className='overflow-x-auto overflow-y-auto' style={{ maxHeight: '450px' }}>
         <table className={tableStyles.table}>
           <thead>
             {table.getHeaderGroups().map(headerGroup => (
@@ -234,7 +234,11 @@ const OrderListTable = ({ orderData }) => {
             <tbody>
               <tr>
                 <td colSpan={table.getVisibleFlatColumns().length} className='text-center'>
-                  No data available
+                  <div className='flex flex-col items-center justify-center p-10 text-textSecondary'>
+                    <i className='ri-inbox-line text-5xl mb-2 opacity-50' />
+                    <Typography variant='h6' color='text.secondary'>No Orders Found</Typography>
+                    <Typography variant='body2' color='text.disabled'>There are currently no orders associated with this contact.</Typography>
+                  </div>
                 </td>
               </tr>
             </tbody>
