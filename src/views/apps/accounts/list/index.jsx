@@ -42,8 +42,14 @@
 // React Imports
 import React, { Suspense, lazy, useState, useEffect } from 'react';
 
+// MUI Imports
+import Grid from '@mui/material/Grid';
+
 // Shimmer Import
 import Shimmer from '../../../../components/shimmer-effect/index';
+
+// Component Imports
+import CardCounters from '@/components/counter-cards';
 
 // Lazy Load Components
 const AccountListTable = lazy(() => import('./AccountListTable'));
@@ -54,6 +60,13 @@ const ContactList = ({ customerData }) => {
   useEffect(() => {
     setIsLoaded(true);
   }, []);
+
+  const accountCounts = {
+    today: 237,
+    weekly: 860,
+    monthly: 4567,
+    total: 21459
+  }
 
   return (
     <div className={isLoaded ? 'visible' : 'hidden'}>

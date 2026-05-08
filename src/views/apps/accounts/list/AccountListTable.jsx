@@ -400,7 +400,7 @@ const AccountListTable = ({ customerData }) => {
               Columns
             </Button>
           </div>
-        </div>
+        </CardContent>
 
         {/* Table Container */}
         <div className='flex-1 overflow-y-auto overflow-x-auto'>
@@ -486,7 +486,7 @@ const AccountListTable = ({ customerData }) => {
         quotesData={data}
         setData={setData}
       />
-    </div >
+    </>
   )
 }
 
