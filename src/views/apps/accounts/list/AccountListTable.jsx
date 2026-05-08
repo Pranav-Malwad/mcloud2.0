@@ -279,7 +279,7 @@ const AccountListTable = ({ customerData }) => {
     },
     initialState: {
       pagination: {
-        pageSize: 10
+        pageSize: 6
       }
     },
     enableRowSelection: true, //enable row selection for all rows
@@ -319,7 +319,7 @@ const AccountListTable = ({ customerData }) => {
 
   return (
     <>
-      <Card className='mt-6'>
+      <Card className='mt-2'>
         <CardContent className='flex justify-between flex-wrap max-sm:flex-col sm:items-center gap-4'>
           <DebouncedInput
             value={globalFilter ?? ''}
@@ -383,24 +383,21 @@ const AccountListTable = ({ customerData }) => {
               </tbody>
             ) : (
               <tbody>
-                {table
-                  .getRowModel()
-                  .rows.slice(0, table.getState().pagination.pageSize)
-                  .map(row => {
-                    return (
-                      <tr key={row.id} className={classnames({ selected: row.getIsSelected() })}>
-                        {row.getVisibleCells().map(cell => (
-                          <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
-                        ))}
-                      </tr>
-                    )
-                  })}
+                {table.getRowModel().rows.map(row => {
+                  return (
+                    <tr key={row.id} className={classnames({ selected: row.getIsSelected() })}>
+                      {row.getVisibleCells().map(cell => (
+                        <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                      ))}
+                    </tr>
+                  )
+                })}
               </tbody>
             )}
           </table>
         </div>
         <TablePagination
-          rowsPerPageOptions={[10, 25, 50, 100]}
+          rowsPerPageOptions={[6, 10, 25, 50, 100]}
           component='div'
           className='border-bs'
           count={table.getFilteredRowModel().rows.length}

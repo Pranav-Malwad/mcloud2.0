@@ -70,13 +70,13 @@ const ContactList = ({ customerData }) => {
   return (
     <div className={isLoaded ? 'visible' : 'hidden'}>
 
-    <Grid container spacing={4}>
-      <Grid item xs={12}>
+    <Grid container columnSpacing={4} rowSpacing={2} sx={{ mt: -0.75 }}>
+      <Grid item xs={12} sx={{ pt: '0px !important' }}>
         <Suspense fallback={<Shimmer variant="rectangular" width="100%" height={80} />}>
           <CardCounters entityType='Accounts' counts={accountCounts} />
         </Suspense>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} sx={{ pt: '8px !important' }}>
         <Suspense fallback={<Shimmer variant="rectangular" width="100%" height={400} />}>
           <AccountListTable customerData={customerData} />
         </Suspense>
