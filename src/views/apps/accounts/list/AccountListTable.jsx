@@ -133,7 +133,7 @@ const AccountListTable = ({ customerData }) => {
     if (activeFilters.status) result = result.filter(item => item.status === activeFilters.status)
     if (activeFilters.industry) result = result.filter(item => item.industry === activeFilters.industry)
     if (activeFilters.accountExecutive) result = result.filter(item => item.accountExecutive === activeFilters.accountExecutive)
-    
+
     if (viewFilter === 'complete') {
       result = result.filter(item => item.status === 'Active' || item.status === 'Completed')
     } else if (viewFilter === 'incomplete') {
@@ -320,7 +320,7 @@ const AccountListTable = ({ customerData }) => {
     },
     initialState: {
       pagination: {
-        pageSize: 25
+        pageSize: 6
       }
     },
     enableRowSelection: true, //enable row selection for all rows
@@ -361,59 +361,36 @@ const AccountListTable = ({ customerData }) => {
   const activeFiltersCount = Object.values(activeFilters).filter(Boolean).length
 
   return (
-    <div className='flex flex-col flex-1 overflow-hidden h-full'>
-      <PageHeader 
-        title="Accounts"
-        subtitle={`${filteredData.length} of ${data.length} records`}
-        kpis={[
-          { label: 'Today', value: contactsCounts.today, icon: 'ri-calendar-event-line' },
-          { label: 'This week', value: contactsCounts.weekly, icon: 'ri-calendar-line' },
-          { label: 'This month', value: contactsCounts.monthly, icon: 'ri-calendar-todo-line' }
-        ]}
-        actionButtons={
-          <>
-            <Button variant='outlined' color='secondary' startIcon={<i className='ri-upload-2-line' />} size="small">Export</Button>
-            <Button variant='contained' onClick={() => setAddUserOpen(true)} startIcon={<i className='ri-add-line' />} size="small">New Account</Button>
-          </>
-        }
-      />
-
-      <Card className='flex flex-col flex-1 overflow-hidden shadow-none border border-x-0 sm:border-x sm:mx-5 mb-5 rounded-none sm:rounded-lg'>
-        {/* Toolbar */}
-        <div className='flex justify-between items-center p-3 border-b flex-wrap gap-3'>
-          <div className='flex gap-3 items-center flex-wrap flex-1'>
-            <ToggleButtonGroup size="small" value={viewFilter} exclusive onChange={handleViewFilter} aria-label="view filters" sx={{ height: 36 }}>
-              <ToggleButton value="all" aria-label="all" className='px-3'>
-                All <span className="ml-2 bg-primary text-white text-xs px-2 py-0.5 rounded-full">{data.length}</span>
-              </ToggleButton>
-              <ToggleButton value="complete" aria-label="complete" className='px-3'>
-                Complete <span className="ml-2 bg-secondary text-white text-xs px-2 py-0.5 rounded-full">42</span>
-              </ToggleButton>
-              <ToggleButton value="incomplete" aria-label="incomplete" className='px-3'>
-                Incomplete <span className="ml-2 bg-secondary text-white text-xs px-2 py-0.5 rounded-full">18</span>
-              </ToggleButton>
-            </ToggleButtonGroup>
-            <DebouncedInput
-              value={globalFilter ?? ''}
-              onChange={value => setGlobalFilter(String(value))}
-              placeholder='Search accounts, contacts, emails...'
-              className='min-w-[250px]'
-            />
-            <Button variant='outlined' color='secondary' startIcon={<i className='ri-filter-3-line' />} onClick={() => setFilterDrawerOpen(true)} className='bg-backgroundPaper'>
-              Filters {activeFiltersCount > 0 && <span className="ml-1 bg-actionHover text-textPrimary text-xs px-1.5 py-0.5 rounded-full">{activeFiltersCount}</span>}
+    <>
+      <Card className='mt-2'>
+        <CardContent className='flex justify-between flex-wrap max-sm:flex-col sm:items-center gap-4'>
+          <DebouncedInput
+            value={globalFilter ?? ''}
+            onChange={value => setGlobalFilter(String(value))}
+            placeholder='Search'
+            className='max-sm:is-full'
+          />
+          <div className='flex gap-4 max-sm:flex-col max-sm:is-full'>
+            <Button
+              variant='outlined'
+              className='max-sm:is-full'
+              color='secondary'
+              startIcon={<i className='ri-upload-2-line' />}
+            >
+              Export
             </Button>
             {/* Active filter pills */}
             {Object.entries(activeFilters).map(([key, value]) => {
               if (!value) return null;
               const labelMap = { status: 'Status', industry: 'Industry', accountExecutive: 'Executive' }
               return (
-                <Chip 
-                  key={key} 
-                  size='small' 
-                  variant='outlined' 
-                  label={`${labelMap[key] || key}: ${value}`} 
-                  onDelete={() => handleRemoveFilter(key)} 
-                  className='bg-backgroundPaper rounded-[8px] h-[34px]' 
+                <Chip
+                  key={key}
+                  size='small'
+                  variant='outlined'
+                  label={`${labelMap[key] || key}: ${value}`}
+                  onDelete={() => handleRemoveFilter(key)}
+                  className='bg-backgroundPaper rounded-[8px] h-[34px]'
                 />
               )
             })}
@@ -465,25 +442,22 @@ const AccountListTable = ({ customerData }) => {
               </tbody>
             ) : (
               <tbody>
-                {table
-                  .getRowModel()
-                  .rows.slice(0, table.getState().pagination.pageSize)
-                  .map(row => {
-                    return (
-                      <tr key={row.id} className={classnames({ selected: row.getIsSelected() })}>
-                        {row.getVisibleCells().map(cell => (
-                          <td key={cell.id} className='py-2'>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
-                        ))}
-                      </tr>
-                    )
-                  })}
+                {table.getRowModel().rows.map(row => {
+                  return (
+                    <tr key={row.id} className={classnames({ selected: row.getIsSelected() })}>
+                      {row.getVisibleCells().map(cell => (
+                        <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                      ))}
+                    </tr>
+                  )
+                })}
               </tbody>
             )}
           </table>
         </div>
-        
+
         <TablePagination
-          rowsPerPageOptions={[10, 25, 50, 100]}
+          rowsPerPageOptions={[6, 10, 25, 50, 100]}
           component='div'
           className='border-t'
           count={table.getFilteredRowModel().rows.length}
@@ -499,9 +473,9 @@ const AccountListTable = ({ customerData }) => {
         />
       </Card>
 
-      <AdvancedFiltersDrawer 
-        open={filterDrawerOpen} 
-        handleClose={() => setFilterDrawerOpen(false)} 
+      <AdvancedFiltersDrawer
+        open={filterDrawerOpen}
+        handleClose={() => setFilterDrawerOpen(false)}
         activeFilters={activeFilters}
         onApply={handleApplyFilters}
         onClear={handleClearFilters}
@@ -512,7 +486,7 @@ const AccountListTable = ({ customerData }) => {
         quotesData={data}
         setData={setData}
       />
-    </div>
+    </div >
   )
 }
 

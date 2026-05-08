@@ -17,7 +17,7 @@
 //   const breadcrumbs = [
 //     { label: 'Home', path: '/' },
 //     { label: 'Accounts', path: '/apps/accounts' },
-    
+
 //   ]
 
 //   return (
@@ -56,10 +56,20 @@ const ContactList = ({ customerData }) => {
   }, []);
 
   return (
-    <div className={isLoaded ? 'flex flex-col h-[calc(100vh-210px)] overflow-hidden' : 'hidden'}>
-      <Suspense fallback={<Shimmer variant="rectangular" width="100%" height="100%" />}>
-        <AccountListTable customerData={customerData} />
-      </Suspense>
+    <div className={isLoaded ? 'visible' : 'hidden'}>
+
+      <Grid container columnSpacing={4} rowSpacing={2} sx={{ mt: -0.75 }}>
+        <Grid item xs={12} sx={{ pt: '0px !important' }}>
+          <Suspense fallback={<Shimmer variant="rectangular" width="100%" height={80} />}>
+            <CardCounters entityType='Accounts' counts={accountCounts} />
+          </Suspense>
+        </Grid>
+        <Grid item xs={12} sx={{ pt: '8px !important' }}>
+          <Suspense fallback={<Shimmer variant="rectangular" width="100%" height={400} />}>
+            <AccountListTable customerData={customerData} />
+          </Suspense>
+        </Grid>
+      </Grid>
     </div>
   );
 };

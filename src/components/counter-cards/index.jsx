@@ -83,9 +83,14 @@ const CardCounters = ({ entityType, counts }) => {
     }
   ]
 
+  const orderedData =
+    entityType === 'Accounts'
+      ? [data[3], data[2], data[1], data[0]]
+      : data
+
   return (
     <Grid container spacing={4} >
-      {data.map((item, i) => (
+      {orderedData.map((item, i) => (
         <Grid key={i} item xs={12} sm={6} md={3}>
           <HorizontalWithSubtitle {...item} />
         </Grid>
