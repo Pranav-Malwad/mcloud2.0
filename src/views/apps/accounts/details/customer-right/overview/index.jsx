@@ -74,17 +74,16 @@ const Overview = ({ customerData }) => {
   }, [])
 
   return (
-    <Grid container spacing={6}>
-      <Grid item xs={12}>
+    <Grid container spacing={4}>
+      <Grid item xs={12} md={5}>
         <CustomerProfileHeader customerData={customerData} />
       </Grid>
-       <Grid item xs={12}>
-        <CustomerStatisticsCard customerStatData={statsData?.customerStats} />
+       <Grid item xs={12} md={7}>
+        <CustomerStatisticsCard customerStatData={statsData?.customerStats} customerData={customerData} />
       </Grid>
       <Grid item xs={12}>
-        <CustomerAdditonalInformation></CustomerAdditonalInformation>
+        <CustomerAdditonalInformation customerData={customerData} />
       </Grid>
-      
     </Grid>
   )
 }

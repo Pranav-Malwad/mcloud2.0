@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 
 // MUI Imports
+import Box from '@mui/material/Box'
+import Grid from '@mui/material/Grid'
 import Drawer from '@mui/material/Drawer'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
@@ -11,6 +13,9 @@ import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
+import Divider from '@mui/material/Divider'
+import FormControl from '@mui/material/FormControl'
+import InputLabel from '@mui/material/InputLabel'
 
 const AdvancedFiltersDrawer = ({ open, handleClose, activeFilters, onApply, onClear }) => {
   // Local state for the drawer before applying
@@ -45,120 +50,189 @@ const AdvancedFiltersDrawer = ({ open, handleClose, activeFilters, onApply, onCl
       variant='temporary'
       onClose={handleClose}
       ModalProps={{ keepMounted: true }}
-      sx={{ '& .MuiDrawer-paper': { width: { xs: 320, sm: 380 }, p: 0, overflow: 'hidden' } }}
+      sx={{ '& .MuiDrawer-paper': { width: { xs: 320, sm: 500 } } }}
     >
-      <div className='flex flex-col h-full'>
-        {/* Header */}
-        <div className='flex items-start justify-between p-6 pb-2 relative'>
-          <div>
-            <Typography variant='h5' className='font-bold text-xl mb-2 text-textPrimary'>Advanced filters</Typography>
-            <Typography variant='body2' className='text-textSecondary'>Refine results across all fields.</Typography>
-          </div>
-          <IconButton onClick={handleClose} size='small' className='border absolute right-4 top-4'>
-            <i className='ri-close-line text-lg' />
-          </IconButton>
-        </div>
-
-        {/* Content */}
-        <div className='p-6 flex flex-col gap-6 flex-grow overflow-y-auto'>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 4, px: 5 }}>
+        <Typography variant='h5'>Advanced Filters</Typography>
+        <IconButton size='small' onClick={handleClose}>
+          <i className='ri-close-line text-2xl' />
+        </IconButton>
+      </Box>
+      <Divider />
+      
+      <Box sx={{ p: 5, flexGrow: 1, overflowY: 'auto' }}>
+        <Grid container spacing={4}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              size="small"
+              label='First Name'
+              fullWidth
+              value={localFilters.firstName || ''}
+              onChange={e => handleChange('firstName', e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              size="small"
+              label='Last Name'
+              fullWidth
+              value={localFilters.lastName || ''}
+              onChange={e => handleChange('lastName', e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              size="small"
+              label='Email'
+              fullWidth
+              value={localFilters.email || ''}
+              onChange={e => handleChange('email', e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              size="small"
+              label='Account Name'
+              fullWidth
+              value={localFilters.accountName || ''}
+              onChange={e => handleChange('accountName', e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              size="small"
+              label='State'
+              fullWidth
+              value={localFilters.state || ''}
+              onChange={e => handleChange('state', e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth size="small">
+              <InputLabel id='industry-label'>Industry</InputLabel>
+              <Select
+                multiple
+                id='industry'
+                labelId='industry-label'
+                label='Industry'
+                value={localFilters.industry || []}
+                onChange={e => handleChange('industry', typeof e.target.value === 'string' ? e.target.value.split(',') : e.target.value)}
+                renderValue={(selected) => selected.join(', ')}
+                IconComponent={() => <i className='ri-expand-up-down-line text-textDisabled mr-3' />}
+              >
+                <MenuItem value='Technology'>Technology</MenuItem>
+                <MenuItem value='Energy'>Energy</MenuItem>
+                <MenuItem value='Consumer Products'>Consumer Products</MenuItem>
+                <MenuItem value='Automotive'>Automotive</MenuItem>
+                <MenuItem value='Medical'>Medical</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth size="small">
+              <InputLabel id='lead-source-label'>Lead Source</InputLabel>
+              <Select
+                id='lead-source'
+                labelId='lead-source-label'
+                label='Lead Source'
+                value={localFilters.leadSource || ''}
+                onChange={e => handleChange('leadSource', e.target.value)}
+                IconComponent={() => <i className='ri-expand-up-down-line text-textDisabled mr-3' />}
+              >
+                <MenuItem value=''><em>Any source</em></MenuItem>
+                <MenuItem value='Organic'>Organic</MenuItem>
+                <MenuItem value='Referral'>Referral</MenuItem>
+                <MenuItem value='Social Media'>Social Media</MenuItem>
+                <MenuItem value='Direct'>Direct</MenuItem>
+                <MenuItem value='Partner'>Partner</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth size="small">
+              <InputLabel id='account-exec-label'>Account Executive</InputLabel>
+              <Select
+                id='account-exec'
+                labelId='account-exec-label'
+                label='Account Executive'
+                value={localFilters.accountExecutive || ''}
+                onChange={e => handleChange('accountExecutive', e.target.value)}
+                IconComponent={() => <i className='ri-expand-up-down-line text-textDisabled mr-3' />}
+              >
+                <MenuItem value=''><em>Anyone</em></MenuItem>
+                <MenuItem value='Justin Howard'>Justin Howard</MenuItem>
+                <MenuItem value='Sojwal Ae'>Sojwal Ae</MenuItem>
+                <MenuItem value='David Gutlay'>David Gutlay</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth size="small">
+              <InputLabel id='project-manager-label'>Project Manager</InputLabel>
+              <Select
+                id='project-manager'
+                labelId='project-manager-label'
+                label='Project Manager'
+                value={localFilters.projectManager || ''}
+                onChange={e => handleChange('projectManager', e.target.value)}
+                IconComponent={() => <i className='ri-expand-up-down-line text-textDisabled mr-3' />}
+              >
+                <MenuItem value=''><em>Anyone</em></MenuItem>
+                <MenuItem value='Bob Smith'>Bob Smith</MenuItem>
+                <MenuItem value='Alice Johnson'>Alice Johnson</MenuItem>
+                <MenuItem value='Charlie Brown'>Charlie Brown</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              size="small"
+              label='Start Date'
+              placeholder='mm/dd/yyyy'
+              fullWidth
+              value={localFilters.startDate || ''}
+              onChange={e => handleChange('startDate', e.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <i className='ri-calendar-line text-textDisabled' />
+                  </InputAdornment>
+                )
+              }}
+              InputLabelProps={{ shrink: true }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              size="small"
+              label='End Date'
+              placeholder='mm/dd/yyyy'
+              fullWidth
+              value={localFilters.endDate || ''}
+              onChange={e => handleChange('endDate', e.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <i className='ri-calendar-line text-textDisabled' />
+                  </InputAdornment>
+                )
+              }}
+              InputLabelProps={{ shrink: true }}
+            />
+          </Grid>
           
-          <div className='flex flex-col gap-2'>
-            <Typography variant='subtitle2' className='font-semibold text-textPrimary'>Status</Typography>
-            <Select 
-              value={localFilters.status || ''} 
-              onChange={e => handleChange('status', e.target.value)} 
-              displayEmpty 
-              size='small' 
-              className='w-full'
-              IconComponent={() => <i className='ri-expand-up-down-line text-textDisabled mr-3' />}
-            >
-              <MenuItem value=''><span className='text-textDisabled'>Any status</span></MenuItem>
-              <MenuItem value='Active'>Active</MenuItem>
-              <MenuItem value='Pending'>Pending</MenuItem>
-              <MenuItem value='Inactive'>Inactive</MenuItem>
-            </Select>
-          </div>
-          
-          <div className='flex flex-col gap-2'>
-            <Typography variant='subtitle2' className='font-semibold text-textPrimary'>Industry</Typography>
-            <Select 
-              value={localFilters.industry || ''} 
-              onChange={e => handleChange('industry', e.target.value)} 
-              displayEmpty 
-              size='small' 
-              className='w-full'
-              IconComponent={() => <i className='ri-expand-up-down-line text-textDisabled mr-3' />}
-            >
-              <MenuItem value=''><span className='text-textDisabled'>Any industry</span></MenuItem>
-              <MenuItem value='Technology'>Technology</MenuItem>
-              <MenuItem value='Energy'>Energy</MenuItem>
-              <MenuItem value='Consumer Products'>Consumer Products</MenuItem>
-              <MenuItem value='Automotive'>Automotive</MenuItem>
-              <MenuItem value='Medical'>Medical</MenuItem>
-            </Select>
-          </div>
-
-          <div className='flex flex-col gap-2'>
-            <Typography variant='subtitle2' className='font-semibold text-textPrimary'>Account Executive</Typography>
-            <Select 
-              value={localFilters.accountExecutive || ''} 
-              onChange={e => handleChange('accountExecutive', e.target.value)} 
-              displayEmpty 
-              size='small' 
-              className='w-full'
-              IconComponent={() => <i className='ri-expand-up-down-line text-textDisabled mr-3' />}
-            >
-              <MenuItem value=''><span className='text-textDisabled'>Anyone</span></MenuItem>
-              <MenuItem value='Justin Howard'>Justin Howard</MenuItem>
-              <MenuItem value='Sojwal Ae'>Sojwal Ae</MenuItem>
-              <MenuItem value='David Gutlay'>David Gutlay</MenuItem>
-            </Select>
-          </div>
-
-          <div className='flex gap-4'>
-            <div className='flex flex-col gap-2 flex-1'>
-              <Typography variant='subtitle2' className='font-semibold text-textPrimary'>From</Typography>
-              <TextField
-                fullWidth
-                size='small'
-                placeholder='mm/dd/yyyy'
-                value={localFilters.fromDate || ''}
-                onChange={e => handleChange('fromDate', e.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position='end'>
-                      <i className='ri-calendar-line text-textDisabled' />
-                    </InputAdornment>
-                  )
-                }}
-              />
-            </div>
-            <div className='flex flex-col gap-2 flex-1'>
-              <Typography variant='subtitle2' className='font-semibold text-textPrimary'>To</Typography>
-              <TextField
-                fullWidth
-                size='small'
-                placeholder='mm/dd/yyyy'
-                value={localFilters.toDate || ''}
-                onChange={e => handleChange('toDate', e.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position='end'>
-                      <i className='ri-calendar-line text-textDisabled' />
-                    </InputAdornment>
-                  )
-                }}
-              />
-            </div>
-          </div>
-        </div>
-        
-        {/* Footer */}
-        <div className='p-6 flex items-center justify-between mt-auto'>
-          <Button variant='outlined' color='secondary' onClick={handleReset}>Clear all</Button>
-          <Button variant='contained' color='primary' onClick={handleApply} className='px-8'>Apply</Button>
-        </div>
-      </div>
+          <Grid item xs={12}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+              <Button variant='outlined' color='secondary' onClick={handleReset}>
+                Clear all
+              </Button>
+              <Button variant='contained' color='primary' onClick={handleApply}>
+                Apply Filters
+              </Button>
+            </Box>
+          </Grid>
+        </Grid>
+      </Box>
     </Drawer>
   )
 }

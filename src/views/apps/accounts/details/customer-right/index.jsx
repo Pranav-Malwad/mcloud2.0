@@ -27,30 +27,46 @@ const CustomerRight = ({ tabContentList }) => {
           <Grid item xs={12} sx={{ position: 'sticky', top: '65px', zIndex: 10, bgcolor: 'background.default' }}>
             <CustomTabList onChange={handleChange} variant='scrollable' pill='true'>
               <Tab icon={<i className='ri-user-3-line' />} value='overview' label='Overview' iconPosition='start' />
-
+              <Tab
+                icon={<i className='ri-team-line' />}
+                value='teamAssignment'
+                label='Team Assignment'
+                iconPosition='start'
+              />
               <Tab
                 icon={<i className='ri-map-pin-line' />}
                 value='addressBilling'
-                label='Address & Billing'
+                label='Shipping & Billing Address'
                 iconPosition='start'
               />
-
+              <Tab
+                icon={<i className='ri-bank-card-line' />}
+                value='finance'
+                label='Finance'
+                iconPosition='start'
+              />
+              <Tab
+                icon={<i className='ri-line-chart-line' />}
+                value='leadAttribution'
+                label='Lead Attribution'
+                iconPosition='start'
+              />
+              <Tab
+                icon={<i className='ri-plug-line' />}
+                value='integrations'
+                label='Integrations'
+                iconPosition='start'
+              />
+              <Tab
+                icon={<i className='ri-shield-check-line' />}
+                value='compliance'
+                label='Compliance'
+                iconPosition='start'
+              />
               <Tab
                 icon={<i className='ri-file-list-3-line' />}
-                value='quotes'
-                label='Associated Quotes'
-                iconPosition='start'
-              />
-              <Tab
-                icon={<i className='ri-contacts-book-2-line' />}
-                value='contacts'
-                label='Associated Contacts'
-                iconPosition='start'
-              />
-              <Tab
-                icon={<i className='ri-notification-2-line' />}
-                value='preferences'
-                label='Preferences'
+                value='associatedInfo'
+                label='Associated Info'
                 iconPosition='start'
               />
               {/* <Tab icon={<i className='ri-lock-line' />} value='security' label='Security' iconPosition='start' /> */}

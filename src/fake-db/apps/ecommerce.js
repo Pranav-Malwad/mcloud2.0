@@ -4595,9 +4595,8 @@ export const db = {
       leadSourceDetails: 'Referred by John Smith',
       nda: true,
       accountId: 'ACC-12345',
-      status: 'Active',
+      status: 'Delivered',
       // CONTACTS GRID FIELDS 
-
 
       // ACCOUNTS FIELDS GRID 
       city: 'Los Angeles',
@@ -4680,7 +4679,7 @@ export const db = {
       note: 'Potential for future business',
       nda: true,
       accountId: 'ACC-13579',
-      status: 'Active',
+      status: 'Delivered',
       city: 'Chicago',
       state: 'IL',
       owner: 'Emily Johnson',
@@ -4717,7 +4716,7 @@ export const db = {
       note: 'Requires urgent follow-up',
       nda: false,
       accountId: 'ACC-24680',
-      status: 'Active',
+      status: 'Delivered',
       city: 'New York',
       state: 'NY',
       owner: 'Michael Brown',
