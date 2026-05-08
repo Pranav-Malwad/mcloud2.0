@@ -40,48 +40,26 @@
 'use client';
 
 // React Imports
-import React, { Suspense, lazy , useState, useEffect } from 'react';
-
-// MUI Imports
-import Grid from '@mui/material/Grid';
+import React, { Suspense, lazy, useState, useEffect } from 'react';
 
 // Shimmer Import
 import Shimmer from '../../../../components/shimmer-effect/index';
 
 // Lazy Load Components
-const CardCounters = lazy(() => import('@/components/counter-cards'));
 const AccountListTable = lazy(() => import('./AccountListTable'));
 
 const ContactList = ({ customerData }) => {
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    setIsLoaded(true)
-  }, [])
-  const accountCounts = {
-    today: 237,
-    weekly: 860,
-    monthly: 4567,
-    total: 21459,
-  };
-
-
+    setIsLoaded(true);
+  }, []);
 
   return (
-    <div className={isLoaded ? 'visible' : 'hidden'}>
-
-    <Grid container spacing={4}>
-      <Grid item xs={12}>
-        <Suspense fallback={<Shimmer variant="rectangular" width="100%" height={80} />}>
-          <CardCounters entityType='Accounts' counts={accountCounts} />
-        </Suspense>
-      </Grid>
-      <Grid item xs={12}>
-        <Suspense fallback={<Shimmer variant="rectangular" width="100%" height={400} />}>
-          <AccountListTable customerData={customerData} />
-        </Suspense>
-      </Grid>
-    </Grid>
+    <div className={isLoaded ? 'flex flex-col h-[calc(100vh-210px)] overflow-hidden' : 'hidden'}>
+      <Suspense fallback={<Shimmer variant="rectangular" width="100%" height="100%" />}>
+        <AccountListTable customerData={customerData} />
+      </Suspense>
     </div>
   );
 };
