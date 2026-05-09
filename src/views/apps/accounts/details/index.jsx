@@ -121,7 +121,27 @@ const AddressBillingTab = dynamic(() => import('@views/apps/accounts/details/cus
   ssr: false,
   loading: () => <Shimmer variant='rectangular' width='100%' height={400} />
 })
-const PreferencesTab = dynamic(() => import('@views/apps/accounts/details/customer-right/preferences'), {
+const FinanceTab = dynamic(() => import('@views/apps/accounts/details/customer-right/finance'), {
+  ssr: false,
+  loading: () => <Shimmer variant='rectangular' width='100%' height={400} />
+})
+const TeamAssignmentTab = dynamic(() => import('@views/apps/accounts/details/customer-right/team-assignment'), {
+  ssr: false,
+  loading: () => <Shimmer variant='rectangular' width='100%' height={400} />
+})
+const LeadAttributionTab = dynamic(() => import('@views/apps/accounts/details/customer-right/lead-attribution'), {
+  ssr: false,
+  loading: () => <Shimmer variant='rectangular' width='100%' height={400} />
+})
+const ComplianceTab = dynamic(() => import('@views/apps/accounts/details/customer-right/compliance'), {
+  ssr: false,
+  loading: () => <Shimmer variant='rectangular' width='100%' height={400} />
+})
+const IntegrationsTab = dynamic(() => import('@views/apps/accounts/details/customer-right/integrations'), {
+  ssr: false,
+  loading: () => <Shimmer variant='rectangular' width='100%' height={400} />
+})
+const AssociatedInfoTab = dynamic(() => import('@views/apps/accounts/details/customer-right/associated-info'), {
   ssr: false,
   loading: () => <Shimmer variant='rectangular' width='100%' height={400} />
 })
@@ -129,20 +149,15 @@ const PreferencesTab = dynamic(() => import('@views/apps/accounts/details/custom
 // Vars
 const tabContentList = (tableData, customerData) => ({
   overview: <OverViewTab customerData={customerData} />,
+  finance: <FinanceTab customerData={customerData} />,
+  teamAssignment: <TeamAssignmentTab customerData={customerData} />,
+  leadAttribution: <LeadAttributionTab customerData={customerData} />,
+  compliance: <ComplianceTab customerData={customerData} />,
+  integrations: <IntegrationsTab customerData={customerData} />,
   addressBilling: <AddressBillingTab />,
-  preferences: <PreferencesTab />,
   // security: <SecurityTab />,
   Notification: <NotificationTab />,
-  quotes: (
-    <Suspense fallback={<Shimmer variant='rectangular' width='100%' height={400} />}>
-      <OrderListTable orderData={tableData?.orderData} />
-    </Suspense>
-  ),
-  contacts: (
-    <Suspense fallback={<Shimmer variant='rectangular' width='100%' height={400} />}>
-      <ContactListTable orderData={tableData?.orderData} />
-    </Suspense>
-  )
+  associatedInfo: <AssociatedInfoTab tableData={tableData} />
 })
 
 const CustomerDetails = ({ customerData, customerId }) => {
@@ -175,8 +190,8 @@ const CustomerDetails = ({ customerData, customerId }) => {
   }, [])
 
   return (
-    <Grid container spacing={6}>
-      <Grid item xs={12} className='flex justify-between items-center mb-2'>
+    <Grid container spacing={4}>
+      <Grid item xs={12} className='flex justify-between items-center'>
         <div className='flex items-center gap-3'>
           <IconButton component={Link} href={getLocalizedUrl('/apps/accounts', locale)} color='primary' className='bg-primary/10'>
             <i className='ri-arrow-left-line' />
@@ -185,18 +200,6 @@ const CustomerDetails = ({ customerData, customerId }) => {
             Account #{customerId || 'ID'}
           </Typography>
         </div>
-        <OpenDialogOnElementClick
-          element={Button}
-          elementProps={{ 
-            children: 'Delete Customer', 
-            color: 'error', 
-            variant: 'contained', 
-            size: 'small',
-            startIcon: <i className='ri-delete-bin-7-line' />
-          }}
-          dialog={ConfirmationDialog}
-          dialogProps={{ type: 'delete-customer' }}
-        />
       </Grid>
       <Grid item xs={12}>
         <CustomerRight tabContentList={tabContentList(tableData, customerData)} />

@@ -19,6 +19,7 @@ const StyledMain = styled.main`
   &:has(.${commonLayoutClasses.contentHeightFixed}) {
     display: flex;
     overflow: hidden;
+    padding-block: 0;
   }
 `
 

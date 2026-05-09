@@ -17,7 +17,7 @@
 //   const breadcrumbs = [
 //     { label: 'Home', path: '/' },
 //     { label: 'Accounts', path: '/apps/accounts' },
-    
+
 //   ]
 
 //   return (
@@ -40,7 +40,7 @@
 'use client';
 
 // React Imports
-import React, { Suspense, lazy , useState, useEffect } from 'react';
+import React, { Suspense, lazy, useState, useEffect } from 'react';
 
 // MUI Imports
 import Grid from '@mui/material/Grid';
@@ -48,40 +48,41 @@ import Grid from '@mui/material/Grid';
 // Shimmer Import
 import Shimmer from '../../../../components/shimmer-effect/index';
 
+// Component Imports
+import CardCounters from '@/components/counter-cards';
+
 // Lazy Load Components
-const CardCounters = lazy(() => import('@/components/counter-cards'));
 const AccountListTable = lazy(() => import('./AccountListTable'));
 
 const ContactList = ({ customerData }) => {
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    setIsLoaded(true)
-  }, [])
+    setIsLoaded(true);
+  }, []);
+
   const accountCounts = {
     today: 237,
     weekly: 860,
     monthly: 4567,
-    total: 21459,
-  };
-
-
+    total: 21459
+  }
 
   return (
     <div className={isLoaded ? 'visible' : 'hidden'}>
 
-    <Grid container columnSpacing={4} rowSpacing={2} sx={{ mt: -0.75 }}>
-      <Grid item xs={12} sx={{ pt: '0px !important' }}>
-        <Suspense fallback={<Shimmer variant="rectangular" width="100%" height={80} />}>
-          <CardCounters entityType='Accounts' counts={accountCounts} />
-        </Suspense>
+      <Grid container columnSpacing={4} rowSpacing={2} sx={{ mt: -0.75 }}>
+        <Grid item xs={12} sx={{ pt: '0px !important' }}>
+          <Suspense fallback={<Shimmer variant="rectangular" width="100%" height={80} />}>
+            <CardCounters entityType='Accounts' counts={accountCounts} />
+          </Suspense>
+        </Grid>
+        <Grid item xs={12} sx={{ pt: '8px !important' }}>
+          <Suspense fallback={<Shimmer variant="rectangular" width="100%" height={400} />}>
+            <AccountListTable customerData={customerData} />
+          </Suspense>
+        </Grid>
       </Grid>
-      <Grid item xs={12} sx={{ pt: '8px !important' }}>
-        <Suspense fallback={<Shimmer variant="rectangular" width="100%" height={400} />}>
-          <AccountListTable customerData={customerData} />
-        </Suspense>
-      </Grid>
-    </Grid>
     </div>
   );
 };

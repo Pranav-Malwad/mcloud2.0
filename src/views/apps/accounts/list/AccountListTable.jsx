@@ -15,6 +15,9 @@ import Typography from '@mui/material/Typography'
 import Checkbox from '@mui/material/Checkbox'
 import TextField from '@mui/material/TextField'
 import TablePagination from '@mui/material/TablePagination'
+import ToggleButton from '@mui/material/ToggleButton'
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
+import Chip from '@mui/material/Chip'
 
 // Third-party Imports
 import classnames from 'classnames'
@@ -34,6 +37,7 @@ import {
 
 // Component Imports
 import CustomAvatar from '@core/components/mui/Avatar'
+import AdvancedFiltersDrawer from '@/components/filters/AdvancedFiltersDrawer'
 
 // Util Imports
 import { getInitials } from '@/utils/getInitials'
@@ -97,15 +101,53 @@ const AccountListTable = ({ customerData }) => {
   const [data, setData] = useState(Array.isArray(customerData) ? customerData : [])
   const [globalFilter, setGlobalFilter] = useState('')
   const [addUserOpen, setAddUserOpen] = useState(false)
+  const [filterDrawerOpen, setFilterDrawerOpen] = useState(false)
+  const [viewFilter, setViewFilter] = useState('all')
+  const [activeFilters, setActiveFilters] = useState({})
+  const [columnFilters, setColumnFilters] = useState([])
 
+  const handleViewFilter = (event, newView) => {
+    if (newView !== null) {
+      setViewFilter(newView)
+    }
+  }
 
-  // Hooks
+  const handleApplyFilters = (filters) => {
+    setActiveFilters(filters)
+  }
+
+  const handleClearFilters = () => {
+    setActiveFilters({})
+  }
+
+  const handleRemoveFilter = (key) => {
+    setActiveFilters(prev => {
+      const newFilters = { ...prev }
+      delete newFilters[key]
+      return newFilters
+    })
+  }
+
+  const filteredData = useMemo(() => {
+    let result = data
+    if (activeFilters.status) result = result.filter(item => item.status === activeFilters.status)
+    if (activeFilters.industry) result = result.filter(item => item.industry === activeFilters.industry)
+    if (activeFilters.accountExecutive) result = result.filter(item => item.accountExecutive === activeFilters.accountExecutive)
+
+    if (viewFilter === 'complete') {
+      result = result.filter(item => item.status === 'Delivered')
+    } else if (viewFilter === 'incomplete') {
+      result = result.filter(item => item.status && item.status !== 'Delivered')
+    }
+    return result
+  }, [data, activeFilters, viewFilter])  // Hooks
   const { lang: locale } = useParams()
 
   const columns = useMemo(
     () => [
       {
         id: 'select',
+        enableColumnFilter: false,
         header: ({ table }) => (
           <Checkbox
             {...{
@@ -268,15 +310,17 @@ const AccountListTable = ({ customerData }) => {
   )
 
   const table = useReactTable({
-    data: data,
+    data: filteredData,
     columns,
     filterFns: {
       fuzzy: fuzzyFilter
     },
     state: {
       rowSelection,
-      globalFilter
+      globalFilter,
+      columnFilters
     },
+    onColumnFiltersChange: setColumnFilters,
     initialState: {
       pagination: {
         pageSize: 6
@@ -300,10 +344,10 @@ const AccountListTable = ({ customerData }) => {
     const { avatar, customer } = params
 
     if (avatar) {
-      return <CustomAvatar src={avatar} skin='light' size={34} />
+      return <CustomAvatar src={avatar} skin='light' size={28} />
     } else {
       return (
-        <CustomAvatar skin='light' size={34}>
+        <CustomAvatar skin='light' size={28}>
           {getInitials(customer)}
         </CustomAvatar>
       )
@@ -311,62 +355,132 @@ const AccountListTable = ({ customerData }) => {
   }
 
   const contactsCounts = {
-    today: 237,
-    weekly: 860,
-    monthly: 4567,
-    total: 21459
+    today: 0,
+    weekly: 4,
+    monthly: 18,
+    total: 60
   }
+
+  const activeFiltersCount = Object.values(activeFilters).filter(Boolean).length
 
   return (
     <>
       <Card className='mt-2'>
         <CardContent className='flex justify-between flex-wrap max-sm:flex-col sm:items-center gap-4'>
-          <DebouncedInput
-            value={globalFilter ?? ''}
-            onChange={value => setGlobalFilter(String(value))}
-            placeholder='Search'
-            className='max-sm:is-full'
-          />
-          <div className='flex gap-4 max-sm:flex-col max-sm:is-full'>
-            <Button
-              variant='outlined'
-              className='max-sm:is-full'
-              color='secondary'
-              startIcon={<i className='ri-upload-2-line' />}
+          <div className='flex items-center gap-4 max-sm:flex-col max-sm:is-full'>
+            <ToggleButtonGroup size="small" value={viewFilter} exclusive onChange={handleViewFilter} aria-label="view filters">
+              <ToggleButton value="all" aria-label="all">
+                All <span className="ml-1.5 bg-primary text-white text-[10px] px-1.5 py-0.5 rounded-full">{data.length}</span>
+              </ToggleButton>
+              <ToggleButton value="complete" aria-label="complete">
+                Complete <span className="ml-1.5 bg-secondary text-white text-[10px] px-1.5 py-0.5 rounded-full">{data.filter(i => i.status === 'Delivered').length}</span>
+              </ToggleButton>
+              <ToggleButton value="incomplete" aria-label="incomplete">
+                Incomplete <span className="ml-1.5 bg-secondary text-white text-[10px] px-1.5 py-0.5 rounded-full">{data.filter(i => i.status && i.status !== 'Delivered').length}</span>
+              </ToggleButton>
+            </ToggleButtonGroup>
+            <DebouncedInput
+              value={globalFilter ?? ''}
+              onChange={value => setGlobalFilter(String(value))}
+              placeholder='Search accounts, contacts, emails...'
+              className='min-w-[250px]'
+              margin='none'
+              sx={{ m: 0 }}
+            />
+          </div>
+          <div className='flex items-center gap-4 max-sm:flex-col max-sm:is-full'>
+            <Button 
+              variant='outlined' 
+              color='secondary' 
+              startIcon={<i className='ri-filter-3-line text-sm' />} 
+              onClick={() => setFilterDrawerOpen(true)} 
+              className='bg-backgroundPaper'
             >
-              Export
+              Filters {activeFiltersCount > 0 && <span className="ml-1 bg-actionHover text-textPrimary text-[10px] px-1.5 py-0.5 rounded-full">{activeFiltersCount}</span>}
             </Button>
 
-            <div>
-            <Button variant='contained' onClick={() => setAddUserOpen(!addUserOpen)} className='max-sm:is-full'>
-                New Account
-              </Button>
-            </div>
+            {/* Active filter pills */}
+            {Object.entries(activeFilters).map(([key, value]) => {
+              if (!value || (Array.isArray(value) && value.length === 0)) return null;
+              const labelMap = { 
+                firstName: 'First Name', 
+                lastName: 'Last Name', 
+                email: 'Email', 
+                accountName: 'Account', 
+                state: 'State', 
+                industry: 'Industry', 
+                leadSource: 'Lead Source', 
+                accountExecutive: 'Executive',
+                projectManager: 'Project Manager',
+                startDate: 'Start Date',
+                endDate: 'End Date'
+              }
+              return (
+                <Chip
+                  key={key}
+                  size='small'
+                  variant='outlined'
+                  label={`${labelMap[key] || key}: ${value}`}
+                  onDelete={() => handleRemoveFilter(key)}
+                  className='bg-backgroundPaper rounded-[8px]'
+                />
+              )
+            })}
           </div>
         </CardContent>
-        <div className='overflow-x-auto'>
+
+        {/* Table Container */}
+        <div className='flex-1 overflow-y-auto overflow-x-auto min-h-0 w-full'>
           <table className={tableStyles.table}>
-            <thead>
+            <thead className='sticky top-0 z-10 bg-backgroundPaper border-b'>
               {table.getHeaderGroups().map(headerGroup => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map(header => (
-                    <th key={header.id}>
+                    <th key={header.id} className='bg-backgroundPaper whitespace-nowrap py-2 text-xs font-semibold'>
                       {header.isPlaceholder ? null : (
-                        <>
+                        <div className="flex flex-col items-start w-full gap-2">
                           <div
-                            className={classnames({
-                              'flex items-center': header.column.getIsSorted(),
+                            className={classnames('flex items-center justify-start w-full', {
                               'cursor-pointer select-none': header.column.getCanSort()
                             })}
                             onClick={header.column.getToggleSortingHandler()}
                           >
                             {flexRender(header.column.columnDef.header, header.getContext())}
                             {{
-                              asc: <i className='ri-arrow-up-s-line text-xl' />,
-                              desc: <i className='ri-arrow-down-s-line text-xl' />
+                              asc: <i className='ri-arrow-up-s-line text-xl ml-1' />,
+                              desc: <i className='ri-arrow-down-s-line text-xl ml-1' />
                             }[header.column.getIsSorted()] ?? null}
                           </div>
-                        </>
+                          {header.column.getCanFilter() ? (
+                            <div className="w-full">
+                              <TextField
+                                size="small"
+                                margin="none"
+                                value={(header.column.getFilterValue() ?? '')}
+                                onChange={e => header.column.setFilterValue(e.target.value)}
+                                placeholder={`Filter...`}
+                                variant="outlined"
+                                onClick={e => e.stopPropagation()} // Prevent sorting click
+                                InputProps={{
+                                  sx: { 
+                                    height: 24, 
+                                    minHeight: 24,
+                                    fontSize: '0.75rem',
+                                    '& .MuiInputBase-input': { 
+                                      padding: '2px 6px' 
+                                    }
+                                  }
+                                }}
+                                sx={{
+                                  m: 0,
+                                  minWidth: 100,
+                                  width: '100%',
+                                  '& .MuiInputBase-root': { height: 24, minHeight: 24 }
+                                }}
+                              />
+                            </div>
+                          ) : null}
+                        </div>
                       )}
                     </th>
                   ))}
@@ -376,7 +490,7 @@ const AccountListTable = ({ customerData }) => {
             {table.getFilteredRowModel().rows.length === 0 ? (
               <tbody>
                 <tr>
-                  <td colSpan={table.getVisibleFlatColumns().length} className='text-center'>
+                  <td colSpan={table.getVisibleFlatColumns().length} className='text-center py-4'>
                     No data available
                   </td>
                 </tr>
@@ -396,10 +510,11 @@ const AccountListTable = ({ customerData }) => {
             )}
           </table>
         </div>
+
         <TablePagination
           rowsPerPageOptions={[6, 10, 25, 50, 100]}
           component='div'
-          className='border-bs'
+          className='border-t'
           count={table.getFilteredRowModel().rows.length}
           rowsPerPage={table.getState().pagination.pageSize}
           page={table.getState().pagination.pageIndex}
@@ -412,6 +527,14 @@ const AccountListTable = ({ customerData }) => {
           onRowsPerPageChange={e => table.setPageSize(Number(e.target.value))}
         />
       </Card>
+
+      <AdvancedFiltersDrawer
+        open={filterDrawerOpen}
+        handleClose={() => setFilterDrawerOpen(false)}
+        activeFilters={activeFilters}
+        onApply={handleApplyFilters}
+        onClear={handleClearFilters}
+      />
       <AddUserDrawer
         open={addUserOpen}
         handleClose={() => setAddUserOpen(!addUserOpen)}
