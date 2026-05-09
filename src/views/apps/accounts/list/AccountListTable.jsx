@@ -118,6 +118,8 @@ const AccountListTable = ({ customerData }) => {
 
   const handleClearFilters = () => {
     setActiveFilters({})
+    setColumnFilters([])
+    setGlobalFilter('')
   }
 
   const handleRemoveFilter = (key) => {
@@ -130,9 +132,42 @@ const AccountListTable = ({ customerData }) => {
 
   const filteredData = useMemo(() => {
     let result = data
+
+    const contains = (source, query) => String(source ?? '').toLowerCase().includes(String(query ?? '').toLowerCase())
+
+    if (activeFilters.firstName) result = result.filter(item => contains(item.firstName, activeFilters.firstName))
+    if (activeFilters.lastName) result = result.filter(item => contains(item.lastName, activeFilters.lastName))
+    if (activeFilters.email) result = result.filter(item => contains(item.email, activeFilters.email))
+    if (activeFilters.accountName) result = result.filter(item => contains(item.account, activeFilters.accountName))
+    if (activeFilters.state) result = result.filter(item => contains(item.state, activeFilters.state))
+    if (activeFilters.leadSource) result = result.filter(item => item.leadSource === activeFilters.leadSource)
+    if (activeFilters.accountExecutive) {
+      result = result.filter(item => item.accountExecutive === activeFilters.accountExecutive)
+    }
+    if (activeFilters.projectManager) result = result.filter(item => item.projectManager === activeFilters.projectManager)
     if (activeFilters.status) result = result.filter(item => item.status === activeFilters.status)
-    if (activeFilters.industry) result = result.filter(item => item.industry === activeFilters.industry)
-    if (activeFilters.accountExecutive) result = result.filter(item => item.accountExecutive === activeFilters.accountExecutive)
+
+    if (activeFilters.industry) {
+      const industries = Array.isArray(activeFilters.industry) ? activeFilters.industry : [activeFilters.industry]
+      const activeIndustryValues = industries.filter(Boolean)
+
+      if (activeIndustryValues.length > 0) {
+        result = result.filter(item => activeIndustryValues.includes(item.industry))
+      }
+    }
+
+    if (activeFilters.startDate) {
+      const start = new Date(activeFilters.startDate)
+      if (!Number.isNaN(start.getTime())) {
+        result = result.filter(item => new Date(item.registrationDate) >= start)
+      }
+    }
+    if (activeFilters.endDate) {
+      const end = new Date(activeFilters.endDate)
+      if (!Number.isNaN(end.getTime())) {
+        result = result.filter(item => new Date(item.registrationDate) <= end)
+      }
+    }
 
     if (viewFilter === 'complete') {
       result = result.filter(item => item.status === 'Delivered')
@@ -234,10 +269,6 @@ const AccountListTable = ({ customerData }) => {
       columnHelper.accessor('state', {
         header: 'State',
         cell: ({ row }) => <Typography>{row.original.state}</Typography>
-      }),
-      columnHelper.accessor('owner', {
-        header: 'Owner',
-        cell: ({ row }) => <Typography>{row.original.owner}</Typography>
       }),
       columnHelper.accessor('accountRevenueYTD', {
         header: 'Account Revenue YTD',

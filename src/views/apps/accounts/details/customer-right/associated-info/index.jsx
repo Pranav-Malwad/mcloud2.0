@@ -25,7 +25,7 @@ const AssociatedInfoTab = ({ tableData }) => {
         className='px-5 mt-2'
         sx={{ borderBottom: 1, borderColor: 'divider' }}
       >
-        <Tab value='contacts' label='Associated Contacts' />
+        <Tab value='contacts' label='Associated Contact' />
         <Tab value='quotes' label='Associated Quotes' />
       </Tabs>
       

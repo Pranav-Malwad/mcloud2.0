@@ -142,15 +142,14 @@ const ContactListTable = () => {
                 {headerGroup.headers.map(header => (
                   <th key={header.id} className="py-2 px-3 align-top bg-transparent border-b text-xs font-semibold uppercase">
                     {header.isPlaceholder ? null : (
-                      <div className="flex flex-col gap-1">
+                      <div className="flex w-full flex-col items-start gap-1">
                         <div
                           className={classnames({
-                            'flex items-center cursor-pointer select-none': header.column.getCanSort(),
-                            'justify-between': true
+                            'flex w-full items-center justify-start cursor-pointer select-none': header.column.getCanSort()
                           })}
                           onClick={header.column.getToggleSortingHandler()}
                         >
-                          <span className="truncate">{flexRender(header.column.columnDef.header, header.getContext())}</span>
+                          <span className="truncate text-left">{flexRender(header.column.columnDef.header, header.getContext())}</span>
                           {{
                             asc: <i className='ri-arrow-up-s-line text-lg ml-1' />,
                             desc: <i className='ri-arrow-down-s-line text-lg ml-1' />
@@ -161,7 +160,10 @@ const ContactListTable = () => {
                             value={(header.column.getFilterValue() ?? '')}
                             onChange={value => header.column.setFilterValue(value)}
                             placeholder=''
+                            fullWidth
+                            margin='none'
                             className="w-full bg-backgroundPaper mt-1 [&_.MuiInputBase-input]:p-1 [&_.MuiInputBase-input]:text-xs"
+                            sx={{ m: 0 }}
                           />
                         ) : null}
                       </div>
